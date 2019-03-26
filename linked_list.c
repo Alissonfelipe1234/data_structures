@@ -116,7 +116,7 @@ int remover(Lista* l, int v) //remove apenas o primeiro elemento achado
 {
     No* p;
     No* ant;
-    if(l->primeiro == v)
+    if(l->primeiro->value == v)
     {
         p = l->primeiro;
         l->primeiro = p->prox;
@@ -136,7 +136,7 @@ int remover(Lista* l, int v) //remove apenas o primeiro elemento achado
         ant = p;
         p = p->prox;
     }
-    if(l->ultimo == v)
+    if(l->ultimo->value == v)
     {
         l->ultimo = ant;
         ant->prox = NULL;
@@ -147,7 +147,11 @@ int remover(Lista* l, int v) //remove apenas o primeiro elemento achado
 }
 void removerTodos(Lista* l, int v) //remove todos os elementos
 {
-    for(;remover(l, v)==1;);
+    int remove = 1;
+    while (remove == 1)
+    {
+        remove = remover(l, v);
+    }
 }
 int quantidadeElementos(Lista* l)
 {
@@ -236,6 +240,7 @@ int main()
     adicionarInicio(L, 52);
     adicionarInicio(L, 8);
     adicionarInicio(L, 8);
+    removerTodos(L, 8);
     Lista *N = OrdenarLista(L);
     printAll(N);
 
