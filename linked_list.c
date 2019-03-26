@@ -173,20 +173,12 @@ Lista* ConcatenarLista(Lista* L1, Lista* L2)
 No* buscarElemento(Lista* l, int v)//Não ordenado!
 {
     No* p = l->primeiro;
-    while (p->prox != NULL)
+    while (p != NULL)
     {
         if(p->value == v)
             return p;
         p = p->prox;
     }
-    if(p->ultimo->value == v)
-        return p->ultimo;
-}
-
-Lista* CopiarLista(Lista* l, Lista* lCopy)
-{
-    l->primeiro = lCopy->primero;
-    l->ultimo = lCopy->ultimo;
 }
 
 Lista* OrdenarLista(Lista* l)
