@@ -23,11 +23,9 @@ Node* findNode(List* l, int v);
 
 int addLast(List* l, int v);
 int addFirst(List* l, int v);
+int addInOrder(List* l, int v);
 int removeValue(List* l, int v);
 int removeAllValues(List* l, int v);
-
-
-int addInOrder(List* l, int v);
 int containsValue(List* l, int v);
 int findValue(List* l, int v);
 int len(List* l);

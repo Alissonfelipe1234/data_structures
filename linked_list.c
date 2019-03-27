@@ -18,10 +18,18 @@ typedef _list
 List* newList(){
      return (List*) calloc (1, sizeof(List));
 }
-List* sortList(List* l);
+List* sortList(List* l){
+    Node* p = l->primeiro;
+    List* newest = newList();
+    while(p!= NULL)
+    {
+        addInOrder(newest, p->value);
+        p = p->prox;
+    }
+    return newest;
+}
 
-Node* newNodeEmpty();
-{
+Node* newNodeEmpty(){
     return (Node*) calloc (1, sizeof(Node));
 }
 Node* newNode(int v){
@@ -45,7 +53,7 @@ int addLast(List* l, int v){
     if(l->denyDuplicate && containsValue(l, v))
         return 0;
 
-    No* p = createNode(v);
+    Node* p = createNode(v);
     if(l->first == NULL)
     {
         l->first = p;
@@ -57,24 +65,95 @@ int addLast(List* l, int v){
     l->last = p;
     return 1;
 }
-int addFirst(List* l, int v)
-{
+int addFirst(List* l, int v){
     if(l->denyDuplicate && containsValue(l, v))
         return 0;
 
-    No* p = createNode(v);
-    if(l->primeiro == NULL)
-        l->ultimo = p;
+    Node* p = createNode(v);
+    if(l->first == NULL)
+        l->last = p;
 
-    p->prox = l->primeiro;
-    l->primeiro = p;
+    p->prox = l->first;
+    l->first = p;
     return 1;
 }
-int removeValue(List* l, int v);
-int removeAllValues(List* l, int v);
+int addInOrder(List* l, int v){
+    if(l->denyDuplicate && containsValue(l, v))
+        return 0;
+
+    Node* newest = criarNo(v);
+    if(l->first == NULL)
+    {
+        l->first = newest;
+        l->first = newest;
+        return 1;
+    }
+    if(l->first->value >= v)
+    {
+        addFirst(l, v);
+        return 1;
+    }
+    if(l->last->value <= v)
+    {
+        addLast(l, v);
+        return 1;
+    }
+
+    Node* p = l->first->prox;
+    Node* prev = l->first;
+    while (p->prox != NULL)
+    {
+        if(p->value >= v)
+        {
+            newest->prox = p;
+            prev->prox = newest;
+            return 1;
+        }
+        prev = p;
+        p = p->prox;
+    }
+    return 0; //it will never be used
+}
+int removeValue(List* l, int v){
+    Node* p;
+    if(l->first->value == v)
+    {
+        p = l->first;
+        l->first = p->prox;
+        free(p);
+        return 1;
+    }
+    Node* prev;
+    p = l->first->prox;
+    prev = l->first;
+    while (p->prox != NULL)
+    {
+        if(p->value == v)
+        {
+            prev->prox = p->prox;
+            free(p);
+            return 1;
+        }
+        prev = p;
+        p = p->prox;
+    }
+    if(l->last->value == v)
+    {
+        l->last = prev;
+        prev->prox = NULL;
+        free(p);
+        return 1;
+    }
+    return 0;
+}
+int removeAllValues(List* l, int v){
+    int remove = 0;
+    for(;removeValue(l,v);)
+        remove = 1;
+    return remove;
+}
 
 
-int addInOrder(List* l, int v);
 int containsValue(List* l, int v);
 int findValue(List* l, int v);
 int len(List* l);
@@ -89,19 +168,6 @@ int denyRepeat(List* l);
 int containsRepeatedNode(List* l);
 
 
-void adicionarInicio(Lista* l, int valor)
-{
-    if(l->replicar == 1 && existeValor(l, valor) == 1)//apenas usado em listas tipo hash
-        return;
-
-    No* p = criarNo(valor);
-
-    if(l->primeiro == NULL)
-        l->ultimo = p;
-
-    p->prox = l->primeiro;
-    l->primeiro = p;
-}
 void printAll(Lista* l)
 {
     No* p = l->primeiro;
@@ -156,47 +222,7 @@ int existeValor(Lista* l, int v)
     }
     return 0;
 }
-int remover(Lista* l, int v) //remove apenas o primeiro elemento achado
-{
-    No* p;
-    No* ant;
-    if(l->primeiro->value == v)
-    {
-        p = l->primeiro;
-        l->primeiro = p->prox;
-        free(p);
-        return 1;
-    }
-    p = l->primeiro->prox;
-    ant = l->primeiro;
-    while (p->prox != NULL)
-    {
-        if(p->value == v)
-        {
-            ant->prox = p->prox;
-            free(p);
-            return 1;
-        }
-        ant = p;
-        p = p->prox;
-    }
-    if(l->ultimo->value == v)
-    {
-        l->ultimo = ant;
-        ant->prox = NULL;
-        free(p);
-        return 1;
-    }
-    return 0;
-}
-void removerTodos(Lista* l, int v) //remove todos os elementos
-{
-    int remove = 1;
-    while (remove == 1)
-    {
-        remove = remover(l, v);
-    }
-}
+
 int quantidadeElementos(Lista* l)
 {
     No* p = l->primeiro;
@@ -229,51 +255,7 @@ No* buscarElemento(Lista* l, int v)//Não ordenado!
     }
 }
 
-Lista* OrdenarLista(Lista* l)
-{
-    No* p = l->primeiro;
-    Lista* nova = criarLista();
-    while(p!= NULL)
-    {
-        inserirOrdenado(nova, p->value);
-        p = p->prox;
-    }
-    return nova;
-}
-void inserirOrdenado(Lista* l, int v)
-{
-    No* novo = criarNo(v);
-    if(l->primeiro == NULL)
-    {
-        l->primeiro = novo;
-        l->ultimo = novo;
-        return;
-    }
-    if(l->primeiro->value >= v)
-    {
-        adicionarInicio(l, v);
-        return;
-    }
-    if(l->ultimo->value <= v)
-    {
-        adicionarFim(l, v);
-        return;
-    }
 
-    No* p = l->primeiro->prox;
-    No* ant = l->primeiro;
-    while (p->prox != NULL)
-    {
-        if(p->value >= v)
-        {
-            novo->prox = p;
-            ant->prox = novo;
-            return;
-        }
-        ant = p;
-        p = p->prox;
-    }
-}
 int main()
 {
     Lista *L = criarLista();
