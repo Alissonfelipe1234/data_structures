@@ -11,7 +11,7 @@ typedef struct _list
 {
     Node *first;
     Node *last;
-    int repeat;
+    int denyDuplicate;
 } List;
 
 List* newList();

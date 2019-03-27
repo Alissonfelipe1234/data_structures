@@ -1,26 +1,82 @@
 #include<stdio.h>
 #include<stdlib.h>
-typedef struct _no
+#include "linked_list.h"
+
+typedef struct _node
 {
     int value;
-    struct _no *prox;
-} No;
+    struct _node *prox;
+} Node;
 
-typedef struct _lista
+typedef _list
 {
-    No *primeiro;
-    No *ultimo;
-    int replicar;
-} Lista;
+    Node *first;
+    Node *last;
+    int denyDuplicate;
+} List;
 
-Lista* criarLista()
-{
-    return (Lista*) calloc (1, sizeof(Lista));
+List* newList(){
+     return (List*) calloc (1, sizeof(List));
 }
-No* criarNoVazio()
+List* sortList(List* l);
+
+Node* newNodeEmpty();
 {
-    return (No*) calloc (1, sizeof(No));
+    return (Node*) calloc (1, sizeof(Node));
 }
+Node* newNode(int v){
+    Node* ret = newNodeEmpty();
+    ret->value = v;
+    return ret;
+}
+Node* findNode(List* l, int v){
+    Node* p;
+    p = l->first;
+    while(p != NULL)
+    {
+        if(v == p->value)
+            return p;
+        p = p->prox;
+    }
+    return NULL;
+}
+
+int addLast(List* l, int v){
+    if(l->denyDuplicate && containsValue(l, v))
+        return 0;
+
+    No* p = createNode(v);
+    if(l->first == NULL)
+    {
+        l->first = p;
+        l->last = p;
+        return 1;
+    }
+
+    l->last->prox = p;
+    l->last = p;
+    return 1;
+}
+int addFirst(List* l, int v);
+int removeValue(List* l, int v);
+int removeAllValues(List* l, int v);
+
+
+int addInOrder(List* l, int v);
+int containsValue(List* l, int v);
+int findValue(List* l, int v);
+int len(List* l);
+int isEmpty(List* l);
+
+
+
+void printAll(List* l);
+
+int allowRepeat(List* l);
+int denyRepeat(List* l);
+int containsRepeatedNode(List* l);
+
+
 No* criarNo(int val)
 {
     No* retorno = (No*) calloc (1, sizeof(No));
