@@ -32,7 +32,6 @@ int len(List* l);
 int isEmpty(List* l);
 
 
-
 void printAll(List* l);
 
 int allowRepeat(List* l);
