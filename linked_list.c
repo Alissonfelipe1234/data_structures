@@ -57,7 +57,19 @@ int addLast(List* l, int v){
     l->last = p;
     return 1;
 }
-int addFirst(List* l, int v);
+int addFirst(List* l, int v)
+{
+    if(l->denyDuplicate && containsValue(l, v))
+        return 0;
+
+    No* p = createNode(v);
+    if(l->primeiro == NULL)
+        l->ultimo = p;
+
+    p->prox = l->primeiro;
+    l->primeiro = p;
+    return 1;
+}
 int removeValue(List* l, int v);
 int removeAllValues(List* l, int v);
 
@@ -77,30 +89,6 @@ int denyRepeat(List* l);
 int containsRepeatedNode(List* l);
 
 
-No* criarNo(int val)
-{
-    No* retorno = (No*) calloc (1, sizeof(No));
-    retorno->value = val;
-    return retorno;
-}
-void adicionarFim(Lista* l, int valor)
-{
-
-    if(l->replicar == 1 && existeValor(l, valor) == 1)//apenas usado em listas tipo hash
-        return;
-
-    No* p = criarNo(valor);
-    if(l->primeiro == NULL)
-    {
-        l->primeiro = p;
-        l->ultimo = p;
-    }
-    else
-    {
-        l->ultimo->prox = p;
-        l->ultimo = p;
-    }
-}
 void adicionarInicio(Lista* l, int valor)
 {
     if(l->replicar == 1 && existeValor(l, valor) == 1)//apenas usado em listas tipo hash
