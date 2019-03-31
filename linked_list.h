@@ -6,7 +6,7 @@ extern "C" {
 typedef struct _node
 {
     int value;
-    struct _node *prox;
+    struct _node *next;
 } Node;
 extern Node root_node;
 
