@@ -154,18 +154,82 @@ int removeAllValues(List* l, int v){
 }
 
 
-int containsValue(List* l, int v);
-int findValue(List* l, int v);
-int len(List* l);
-int isEmpty(List* l);
+int containsValue(List* l, int v){
+    Node* p;
+    p = l->first;
+    while(p != NULL)
+    {
+        if(v == p->value)
+            return 1;
+        p = p->prox;
+    }
+    return 0;
+}
+int len(List* l){
+    Node* p = l->first;
+    int len = 1;
+    for(; p->prox != NULL; len++)
+        p = p->prox;
+    return len;
+}
+int findValueIndex(List* l, int v){
+    if(len(l) <= v)
+        return NULL;
+    Node* p = l->first;
+    for(int index = 0; index <= v; index++)
+        p = p->prox;
+    return p->value;
+}
+int isEmpty(List* l){
+    return l->first == NULL && l->last == NULL;
+}
 
+void printAll(List* l){
+    Node* p = l->first;
+    printf("[");
+    for(; p->prox != NULL; len++)
+    {
+        printf("%i, ", p->value);
+        p = p->prox;
+    }
+    if(l->last == NULL)
+    {
+        printf("NULL]");
+        return;
+    }
+    printf("%i]", l->last);
+}
 
+int containsRepeatedNode(List* l){
+    int len = len(l);
 
-void printAll(List* l);
+    Node* slower = l->first;
+    Node* faster = slower->prox;
+    for(int slow = 0; slow <= len; slow++)
+    {
+        for(int fast = 1; fast <= len; fast++)
+        {
+            if(slower->value == faster->value)
+                return 1;
+            faster = faster->prox;
+        }
+        slower = slower->prox;
+        faster = slower->prox;
+    }
+    return 0;
+}
+int allowRepeat(List* l)
+{
+    l->denyDuplicate = 0;
+    return 1;
+}
+int denyRepeat(List* l){
+    if(containsRepeatedNode(l))
+        return 0;
+    l->denyDuplicate = 1;
+    return 1;
+}
 
-int allowRepeat(List* l);
-int denyRepeat(List* l);
-int containsRepeatedNode(List* l);
 
 
 void printAll(Lista* l)
@@ -191,6 +255,7 @@ void permitirReplicar(Lista* l)
 {
     l->replicar = 0;
 }
+/*
 int existeReplica(Lista* l)
 {
     No* rapido;
@@ -210,64 +275,7 @@ int existeReplica(Lista* l)
     }
     return 0;
 }
-int existeValor(Lista* l, int v)
-{
-    No* p;
-    p = l->primeiro;
-    while(p != NULL)
-    {
-        if(v == p->value)
-            return 1;
-        p = p->prox;
-    }
-    return 0;
-}
-
-int quantidadeElementos(Lista* l)
-{
-    No* p = l->primeiro;
-    int i = 1;
-    for (;p->prox != NULL; i++)
-        p = p->prox;
-
-    return i;
-}
-int vazio(Lista* l)
-{
-    return l->primeiro == NULL;
-}
-Lista* ConcatenarLista(Lista* L1, Lista* L2)
-{
-    L1->ultimo->prox = L2->primeiro;
-    L1->ultimo = L2->ultimo;
-    free(L2);
-    return L1;
-}
-
-No* buscarElemento(Lista* l, int v)//Não ordenado!
-{
-    No* p = l->primeiro;
-    while (p != NULL)
-    {
-        if(p->value == v)
-            return p;
-        p = p->prox;
-    }
-}
-
-
+*/
 int main()
 {
-    Lista *L = criarLista();
-    adicionarInicio(L, 1);
-    adicionarFim(L, 2);
-    adicionarInicio(L, 3);
-    adicionarInicio(L, 7);
-    adicionarInicio(L, 52);
-    adicionarInicio(L, 8);
-    adicionarInicio(L, 8);
-    removerTodos(L, 8);
-    Lista *N = OrdenarLista(L);
-    printAll(N);
-
 }
