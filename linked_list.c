@@ -15,7 +15,7 @@ List* sortList(List* l){
     while(p!= NULL)
     {
         addInOrder(newest, p->value);
-        p = p->prox;
+        p = p->next;
     }
     return newest;
 }
@@ -35,7 +35,7 @@ Node* findNode(List* l, int v){
     {
         if(v == p->value)
             return p;
-        p = p->prox;
+        p = p->next;
     }
     return NULL;
 }
@@ -52,7 +52,7 @@ int addLast(List* l, int v){
         return 1;
     }
 
-    l->last->prox = p;
+    l->last->next = p;
     l->last = p;
     return 1;
 }
@@ -64,7 +64,7 @@ int addFirst(List* l, int v){
     if(l->first == NULL)
         l->last = p;
 
-    p->prox = l->first;
+    p->next = l->first;
     l->first = p;
     return 1;
 }
@@ -90,18 +90,18 @@ int addInOrder(List* l, int v){
         return 1;
     }
 
-    Node* p = l->first->prox;
+    Node* p = l->first->next;
     Node* prev = l->first;
-    while (p->prox != NULL)
+    while (p->next != NULL)
     {
         if(p->value >= v)
         {
-            newest->prox = p;
-            prev->prox = newest;
+            newest->next = p;
+            prev->next = newest;
             return 1;
         }
         prev = p;
-        p = p->prox;
+        p = p->next;
     }
     return 0; //it will never be used
 }
@@ -110,28 +110,28 @@ int removeValue(List* l, int v){
     if(l->first->value == v)
     {
         p = l->first;
-        l->first = p->prox;
+        l->first = p->next;
         free(p);
         return 1;
     }
     Node* prev;
-    p = l->first->prox;
+    p = l->first->next;
     prev = l->first;
-    while (p->prox != NULL)
+    while (p->next != NULL)
     {
         if(p->value == v)
         {
-            prev->prox = p->prox;
+            prev->next = p->next;
             free(p);
             return 1;
         }
         prev = p;
-        p = p->prox;
+        p = p->next;
     }
     if(l->last->value == v)
     {
         l->last = prev;
-        prev->prox = NULL;
+        prev->next = NULL;
         free(p);
         return 1;
     }
@@ -152,15 +152,15 @@ int containsValue(List* l, int v){
     {
         if(v == p->value)
             return 1;
-        p = p->prox;
+        p = p->next;
     }
     return 0;
 }
 int len(List* l){
     Node* p = l->first;
     int len = 1;
-    for(; p->prox != NULL; len++)
-        p = p->prox;
+    for(; p->next != NULL; len++)
+        p = p->next;
     return len;
 }
 int findValueIndex(List* l, int v){
@@ -168,7 +168,7 @@ int findValueIndex(List* l, int v){
         return NULL;
     Node* p = l->first;
     for(int index = 0; index <= v; index++)
-        p = p->prox;
+        p = p->next;
     return p->value;
 }
 int isEmpty(List* l){
@@ -178,10 +178,10 @@ int isEmpty(List* l){
 void printAll(List* l){
     Node* p = l->first;
     printf("[");
-    for(; p->prox != NULL;)
+    for(; p->next != NULL;)
     {
         printf("%i, ", p->value);
-        p = p->prox;
+        p = p->next;
     }
     if(l->last == NULL)
     {
@@ -195,17 +195,17 @@ int containsRepeatedNode(List* l){
     int size = len(l);
 
     Node* slower = l->first;
-    Node* faster = slower->prox;
+    Node* faster = slower->next;
     for(int slow = 0; slow <= size; slow++)
     {
         for(int fast = 1; fast <= size; fast++)
         {
             if(slower->value == faster->value)
                 return 1;
-            faster = faster->prox;
+            faster = faster->next;
         }
-        slower = slower->prox;
-        faster = slower->prox;
+        slower = slower->next;
+        faster = slower->next;
     }
     return 0;
 }
@@ -232,11 +232,11 @@ int existeReplica(Lista* l)
     {
         while(rapido != NULL)
         {
-            rapido = rapido->prox;
+            rapido = rapido->next;
             if(rapido->value == lento->value)
                 return 1;
         }
-        lento = lento->prox;
+        lento = lento->next;
         rapido = lento;
     }
     return 0;
