@@ -1,25 +1,16 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "linked_list.h"
+//#include <linked_list.h>
 
-typedef struct _node
-{
-    int value;
-    struct _node *prox;
-} Node;
-
-typedef _list
-{
-    Node *first;
-    Node *last;
-    int denyDuplicate;
-} List;
+Node root_node;
+List root_list;
 
 List* newList(){
      return (List*) calloc (1, sizeof(List));
 }
 List* sortList(List* l){
-    Node* p = l->primeiro;
+    Node* p = l->first;
     List* newest = newList();
     while(p!= NULL)
     {
@@ -53,7 +44,7 @@ int addLast(List* l, int v){
     if(l->denyDuplicate && containsValue(l, v))
         return 0;
 
-    Node* p = createNode(v);
+    Node* p = newNode(v);
     if(l->first == NULL)
     {
         l->first = p;
@@ -69,7 +60,7 @@ int addFirst(List* l, int v){
     if(l->denyDuplicate && containsValue(l, v))
         return 0;
 
-    Node* p = createNode(v);
+    Node* p = newNode(v);
     if(l->first == NULL)
         l->last = p;
 
@@ -81,7 +72,7 @@ int addInOrder(List* l, int v){
     if(l->denyDuplicate && containsValue(l, v))
         return 0;
 
-    Node* newest = criarNo(v);
+    Node* newest = newNode(v);
     if(l->first == NULL)
     {
         l->first = newest;
@@ -187,7 +178,7 @@ int isEmpty(List* l){
 void printAll(List* l){
     Node* p = l->first;
     printf("[");
-    for(; p->prox != NULL; len++)
+    for(; p->prox != NULL;)
     {
         printf("%i, ", p->value);
         p = p->prox;
@@ -197,17 +188,17 @@ void printAll(List* l){
         printf("NULL]");
         return;
     }
-    printf("%i]", l->last);
+    printf("%i]", l->last->value);
 }
 
 int containsRepeatedNode(List* l){
-    int len = len(l);
+    int size = len(l);
 
     Node* slower = l->first;
     Node* faster = slower->prox;
-    for(int slow = 0; slow <= len; slow++)
+    for(int slow = 0; slow <= size; slow++)
     {
-        for(int fast = 1; fast <= len; fast++)
+        for(int fast = 1; fast <= size; fast++)
         {
             if(slower->value == faster->value)
                 return 1;
@@ -230,31 +221,6 @@ int denyRepeat(List* l){
     return 1;
 }
 
-
-
-void printAll(Lista* l)
-{
-    No* p = l->primeiro;
-    printf("[");
-
-    while(p->prox != NULL)
-    {
-        printf("%i, ",p->value);
-        p = p->prox;
-    }
-    printf("%i",l->ultimo->value);
-    printf("]");
-}
-void proibirReplica(Lista* l)
-{
-    if(existeReplica(l) == 1)
-        return;
-    l->replicar = 1;
-}
-void permitirReplicar(Lista* l)
-{
-    l->replicar = 0;
-}
 /*
 int existeReplica(Lista* l)
 {
@@ -278,4 +244,9 @@ int existeReplica(Lista* l)
 */
 int main()
 {
+    List* l = newList();
+    addLast(l, 10);
+    addLast(l, 2);
+    addLast(l, 11);
+    printAll(l);
 }

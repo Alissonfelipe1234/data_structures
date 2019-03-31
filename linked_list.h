@@ -1,11 +1,14 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
-
-typedef extern struct _node
+#ifdef  __cplusplus
+extern "C" {
+#endif
+typedef struct _node
 {
     int value;
     struct _node *prox;
 } Node;
+extern Node root_node;
 
 typedef struct _list
 {
@@ -13,6 +16,7 @@ typedef struct _list
     Node *last;
     int denyDuplicate;
 } List;
+extern List root_list;
 
 List* newList();
 List* sortList(List* l);
@@ -38,5 +42,7 @@ int containsRepeatedNode(List* l);
 int allowRepeat(List* l);
 int denyRepeat(List* l);
 
-
+#ifdef  __cplusplus
+}
+#endif
 #endif
