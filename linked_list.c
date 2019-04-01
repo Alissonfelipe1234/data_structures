@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "linked_list.h"
-//#include <linked_list.h>
 
 Node root_node;
 List root_list;
@@ -9,13 +8,14 @@ List root_list;
 List* newList(){
     return (List*) calloc (1, sizeof(List));
 }
-List* cloneList(List original){
+List* cloneList(List* original){
 
-    List newest = (List*) calloc (1, sizeof(List));
+    List* newest = newList();
     newest->denyDuplicate = original->denyDuplicate;
     Node* p = original->first;
     for(;p!=NULL;p=p->next)
         addLast(newest, p->value);
+
     return newest;
 }
 List* sortList(List* l){
@@ -235,4 +235,8 @@ int denyRepeat(List* l){
         return 0;
     l->denyDuplicate = 1;
     return 1;
+}
+int main()
+{
+    printf("please include \'#include \"linked_list.c\"\' in your code");
 }
