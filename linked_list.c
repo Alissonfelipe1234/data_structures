@@ -7,7 +7,16 @@ Node root_node;
 List root_list;
 
 List* newList(){
-     return (List*) calloc (1, sizeof(List));
+    return (List*) calloc (1, sizeof(List));
+}
+List* cloneList(List original){
+
+    List newest = (List*) calloc (1, sizeof(List));
+    newest->denyDuplicate = original->denyDuplicate;
+    Node* p = original->first;
+    for(;p!=NULL;p=p->next)
+        addLast(newest, p->value);
+    return newest;
 }
 List* sortList(List* l){
     Node* p = l->first;
