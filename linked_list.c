@@ -12,6 +12,7 @@ List* newList(){
 List* sortList(List* l){
     Node* p = l->first;
     List* newest = newList();
+
     while(p!= NULL)
     {
         addInOrder(newest, p->value);
@@ -76,7 +77,7 @@ int addInOrder(List* l, int v){
     if(l->first == NULL)
     {
         l->first = newest;
-        l->first = newest;
+        l->last = newest;
         return 1;
     }
     if(l->first->value >= v)
@@ -107,6 +108,21 @@ int addInOrder(List* l, int v){
 }
 int removeValue(List* l, int v){
     Node* p;
+    int size = len(l);
+    if(size < 1)
+        return 0;
+    if(size == 1)
+    {
+        if(l->first->value != v)
+            return 0;
+        p = l->first;
+        free(p);
+        l->first = NULL;
+        p = l->last;
+        free(p);
+        l->last = NULL;
+        return 1;
+    }
     if(l->first->value == v)
     {
         p = l->first;
@@ -178,35 +194,26 @@ int isEmpty(List* l){
 void printAll(List* l){
     Node* p = l->first;
     printf("[");
-    for(; p->next != NULL;)
-    {
-        printf("%i, ", p->value);
-        p = p->next;
-    }
     if(l->last == NULL)
     {
         printf("NULL]");
         return;
     }
+    for(; p->next != NULL;)
+    {
+        printf("%i, ", p->value);
+        p = p->next;
+    }
     printf("%i]", l->last->value);
 }
 
 int containsRepeatedNode(List* l){
-    int size = len(l);
-
     Node* slower = l->first;
     Node* faster = slower->next;
-    for(int slow = 0; slow <= size; slow++)
-    {
-        for(int fast = 1; fast <= size; fast++)
-        {
+    for(; slower != NULL; slower = slower->next)
+        for(faster = slower->next; faster != NULL; faster = faster->next)
             if(slower->value == faster->value)
                 return 1;
-            faster = faster->next;
-        }
-        slower = slower->next;
-        faster = slower->next;
-    }
     return 0;
 }
 int allowRepeat(List* l)
@@ -245,8 +252,20 @@ int existeReplica(Lista* l)
 int main()
 {
     List* l = newList();
+    printf("\nAdicionando no fim: \n");
+    addLast(l, 1);
+    addLast(l, 5);
+    addLast(l, 1);
     addLast(l, 10);
-    addLast(l, 2);
-    addLast(l, 11);
+    addLast(l, 500);
+    addLast(l, 6);
+    addLast(l, 7);
+    addLast(l, 8);
     printAll(l);
+
+    printf("A lista ordenada: ");
+
+    List* ordenada = sortList(l);
+
+    printAll(ordenada);
 }

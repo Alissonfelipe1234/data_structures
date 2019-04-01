@@ -32,7 +32,7 @@ int removeValue(List* l, int v);
 int removeAllValues(List* l, int v);
 int containsValue(List* l, int v);
 int len(List* l);
-int findValue(List* l, int v);
+int findValueIndex(List* l, int v);
 int isEmpty(List* l);
 
 
