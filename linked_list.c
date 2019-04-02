@@ -1,7 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "linked_list.h"
+/*
+please include '#include "linked_list.c"' in your code
 
+
+*/
 Node root_node;
 List root_list;
 
@@ -235,8 +239,4 @@ int denyRepeat(List* l){
         return 0;
     l->denyDuplicate = 1;
     return 1;
-}
-int main()
-{
-    printf("please include \'#include \"linked_list.c\"\' in your code");
 }
