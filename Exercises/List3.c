@@ -211,15 +211,65 @@ Lista *CopiaVetor(int *vet, int n){
         insereInicio(nova, vet[i]);
     return nova;
 }
+int removerIndex(Lista* l, int index)
+{
+    if(l == NULL)
+        return 0;
+    if(index == 0)
+    {
+        //remover inicio
+    }
+    if(index == l->tamanho)
+    {
+        remover ultimo
+    }
+    No* anterior = l->inicio;
+    No* atual = anterior->prox;
+    for (int i=0; i < index; i++)
+    {
+        //remover n
+    }
+}
+int removeDuo(Lista* l){
+    No* lento = l->inicio;
+    No* rapido = lento->prox;
+    int i = 1;
+    int l = 1;
+    while(lento!=NULL)
+    {
+        while(rapido!=NULL)
+        {
+            if(rapido->val == lento->val)
+                return removerIndex(l, i);
+            l++;
+            rapido = rapido->prox;
+        }
+        i++;
+        l = i;
+        rapido = lento;
+        lento = lento->prox;
+    }
+    return 0;
+}
+int removeRepetidos(Lista* l){
+    int ret = removeDuo(l);
+    while(ret = removeDuo(l));
+
+    return ret;
+}
+
 /**
-12. Não precisamos usar Lista** L
+12. Precisamos usar para que o &L passado no parametro seja igual a NULL mesmo quando a função acabar
 */
-void DestroiLista(Lista *L){
-    if(L == NULL)
+void DestroiLista(Lista **L){
+    if(L == NULL ||
+       (*L) == NULL)
         return;
-    while(L->tamanho > 0)
-        removePrimeiro(L);
-    L = NULL;
+    while((*L)->tamanho > 0)
+        removePrimeiro(*L);
+    free(*L);
+    (*L) = NULL;
+
 }
 void DivideListaAoMeio(Lista *L, Lista **L1, Lista **L2){
     int primeiro, segundo;
@@ -298,10 +348,8 @@ void imprimirLista(Lista* l)
 int main(){
     int test[] = {1, 2, 3, 7, 4 ,2};
     Lista* a = CopiaVetor(test, 6);
-    Lista* copia = copiarElementos(a, 100);
+    DestroiLista(&a);
     imprimirLista(a);
-    imprimirLista(copia);
-
 }
 
 /**
