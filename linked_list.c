@@ -4,8 +4,18 @@
 /*
 please include '#include "linked_list.c"' in your code
 */
-Node root_node;
-List root_list;
+typedef struct _node
+{
+    int value;
+    struct _node *next;
+} Node;
+
+typedef struct _list
+{
+    Node *first;
+    Node *last;
+    int denyDuplicate;
+} List;
 
 List* newList(){
     return (List*) calloc (1, sizeof(List));
