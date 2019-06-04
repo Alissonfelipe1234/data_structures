@@ -1,5 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
+/*
+please include '#include "doubly.c"' in your code
+*/
 
 typedef struct _no
 {
@@ -13,53 +16,44 @@ typedef struct _lista
     No *atual;
 } Lista;
 
-Lista* novaLista(){
+Lista* newList(){
     return (Lista*) calloc(1, sizeof(Lista));
 }
-No* novoNo(int valor){
+No* newNode(int valor){
     No* retorno = (No*) calloc(1, sizeof(No));
     retorno->valor = valor;
     return retorno;
 }
-No* novoNoProx(int valor, No* prox){
+No* newNodeProx(int valor, No* prox){
     No* retorno = (No*) calloc(1, sizeof(No));
     retorno->valor = valor;
     retorno->pos = prox;
     return retorno;
 }
 
-int adicionarDepoisDoAtual(Lista* l, int valor){
+int addAfterCurrent(Lista* l, int valor){
     if(l->atual == NULL)
     {
-        l->atual = novoNo(valor);
+        l->atual = newNode(valor);
         l->atual->pos = l->atual;
         l->atual->pre = l->atual;
         return 1;
     }
     if(&l->atual == &l->atual->pos && &l->atual == &l->atual->pre)
     {
-        l->atual->pos = novoNo(valor);
+        l->atual->pos = newNode(valor);
         l->atual->pre = l->atual->pos;
         l->atual->pos->pre = l->atual;
         l->atual->pre->pos = l->atual;
         l->atual = l->atual->pos;
         return 1;
     }
-    l->atual->pos = novoNoProx(valor, l->atual->pos);
+    l->atual->pos = newNodeProx(valor, l->atual->pos);
     l->atual->pos->pre = l->atual;
     l->atual->pos->pos->pre = l->atual->pos;
 }
-/*
-int adicionarAntesDoAtual(Lista* l, int valor){
-    if(l->atual == NULL)
-    {
-        l->atual = novoNo(valor);
-        return 1;
-    }
-}
-*/
 
-void printarTodos(Lista* l)
+void printAll(Lista* l)
 {
     if(l->atual == NULL)
     {
@@ -75,17 +69,5 @@ void printarTodos(Lista* l)
         l->atual = l->atual->pos;
     }
     printf("%i]\n", l->atual->valor);
-    printf("atual é o ultimo elemento");
+    printf("atual ï¿½ o ultimo elemento");
 }
-
-int main(){
-    Lista* l = novaLista();
-    printarTodos(l);
-    adicionarDepoisDoAtual(l, 1);
-    adicionarDepoisDoAtual(l, 2);
-    adicionarDepoisDoAtual(l, 3);
-    adicionarDepoisDoAtual(l, 4);
-    adicionarDepoisDoAtual(l, 4);
-    printarTodos(l);
-}
-

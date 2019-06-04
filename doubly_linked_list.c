@@ -4,6 +4,7 @@
 /*
 please include '#include "doubly_linked_list.c"' in your code
 */
+
 typedef struct _node
 {
     int value;
@@ -33,18 +34,6 @@ List* cloneList(List* original){
 
     return newest;
 }
-/*
-List* sortList(List* l){
-    Node* p = l->first;
-    List* newest = newList();
-
-    while(p!= NULL)
-    {
-        addInOrder(newest, p->value);
-        p = p->next;
-    }
-    return newest;
-}*/
 
 Node* newNodeEmpty(){
     return (Node*) calloc (1, sizeof(Node));
@@ -98,45 +87,6 @@ int addFirst(List* l, int v){
     l->first = p;
     return 1;
 }
-/* it'll be implement
-int addInOrder(List* l, int v){
-    if(l->denyDuplicate && containsValue(l, v))
-        return 0;
-
-    Node* newest = newNode(v);
-    if(l->first == NULL)
-    {
-        l->first = newest;
-        l->last = newest;
-        return 1;
-    }
-    if(l->first->value >= v)
-    {
-        addFirst(l, v);
-        return 1;
-    }
-    if(l->last->value <= v)
-    {
-        addLast(l, v);
-        return 1;
-    }
-
-    Node* p = l->first->next;
-    Node* prev = l->first;
-    while (p->next != NULL)
-    {
-        if(p->value >= v)
-        {
-            newest->next = p;
-            prev->next = newest;
-            return 1;
-        }
-        prev = p;
-        p = p->next;
-    }
-    return 0; //it will never be used
-}
-*/
 int removeValue(List* l, int v){
     Node* p;
     int size = len(l);
@@ -186,15 +136,6 @@ int removeValue(List* l, int v){
     }
     return 0;
 }
-/*
-int removeAllValues(List* l, int v){
-    int remove = 0;
-    for(;removeValue(l,v);)
-        remove = 1;
-    return remove;
-}
-
-*/
 int containsValue(List* l, int v){
     Node* p;
     p = l->first;
@@ -214,19 +155,6 @@ int len(List* l){
         p = p->next;
     return len;
 }
-/*
-int findValueIndex(List* l, int v){
-    if(len(l) <= v)
-        return NULL;
-    Node* p = l->first;
-    for(int index = 0; index <= v; index++)
-        p = p->next;
-    return p->value;
-}
-int isEmpty(List* l){
-    return l->first == NULL && l->last == NULL;
-}
-*/
 void printAll(List* l){
     Node* p = l->first;
     printf("[");
@@ -241,40 +169,4 @@ void printAll(List* l){
         p = p->next;
     }
     printf("%i]", l->last->value);
-}
-/*
-
-int containsRepeatedNode(List* l){
-    Node* slower = l->first;
-    Node* faster = slower->next;
-    for(; slower != NULL; slower = slower->next)
-        for(faster = slower->next; faster != NULL; faster = faster->next)
-            if(slower->value == faster->value)
-                return 1;
-    return 0;
-}
-int allowRepeat(List* l)
-{
-    l->denyDuplicate = 0;
-    return 1;
-}
-int denyRepeat(List* l){
-    if(containsRepeatedNode(l))
-        return 0;
-    l->denyDuplicate = 1;
-    return 1;
-}
-*/
-
-int main(){
-    List* list = newList();
-    addFirst(list,1);
-    addFirst(list,1);
-    addFirst(list,4);
-    addFirst(list,1);
-    addFirst(list,1);
-    addFirst(list,1);
-    printAll(list);
-    removeValue(list, 4);
-    printAll(list);
 }

@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include "linked_list.h"
 /*
 please include '#include "linked_list.c"' in your code
 */
@@ -125,7 +124,7 @@ int addInOrder(List* l, int v){
         prev = p;
         p = p->next;
     }
-    return 0; //it will never be used
+    return 0;
 }
 int removeValue(List* l, int v){
     Node* p;
