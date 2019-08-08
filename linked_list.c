@@ -1,6 +1,29 @@
 /*
 please include '#include "linked_list.c"' in your code
 */
+//===========================================================
+//                                                           
+//   ####  ######  #####    ##   ##   ####  ######   ####  
+//  ##       ##    ##  ##   ##   ##  ##       ##    ##     
+//   ###     ##    #####    ##   ##  ##       ##     ###   
+//     ##    ##    ##  ##   ##   ##  ##       ##       ##  
+//  ####     ##    ##   ##   #####    ####    ##    ####   
+//                                                           
+//===========================================================
+
+typedef struct _node
+{
+    int value;
+    struct _node *next;
+} Node;
+
+typedef struct _list
+{
+    Node *first;
+    Node *last;
+    int denyDuplicate;
+} List;
+
 //============================================================
 //                                                            
 //  ##   ##  #####    ###    ####    #####  #####     ####  
@@ -33,7 +56,7 @@ int isEmpty(List* l);
 void printAll(List* l);
 int containsRepeatedNode(List* l);
 int allowRepeat(List* l);
-int denyRepeat(List* l)
+int denyRepeat(List* l);
 
 //===================================
 //                                   
@@ -45,19 +68,6 @@ int denyRepeat(List* l)
 //                                   
 //===================================
 
-
-typedef struct _node
-{
-    int value;
-    struct _node *next;
-} Node;
-
-typedef struct _list
-{
-    Node *first;
-    Node *last;
-    int denyDuplicate;
-} List;
 
 List* newList(){
     return (List*) calloc (1, sizeof(List));
@@ -244,7 +254,7 @@ int len(List* l){
 }
 int findValueIndex(List* l, int v){
     if(len(l) <= v)
-        return NULL;
+        return -1;
     Node* p = l->first;
     for(int index = 0; index <= v; index++)
         p = p->next;
