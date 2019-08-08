@@ -1,8 +1,51 @@
-#include<stdio.h>
-#include<stdlib.h>
 /*
 please include '#include "linked_list.c"' in your code
 */
+//============================================================
+//                                                            
+//  ##   ##  #####    ###    ####    #####  #####     ####  
+//  ##   ##  ##      ## ##   ##  ##  ##     ##  ##   ##     
+//  #######  #####  ##   ##  ##  ##  #####  #####     ###   
+//  ##   ##  ##     #######  ##  ##  ##     ##  ##      ##  
+//  ##   ##  #####  ##   ##  ####    #####  ##   ##  ####   
+//                                                            
+//============================================================
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+List* newList();
+List* cloneList(List* original);
+List* sortList(List* l);
+Node* newNodeEmpty();
+Node* newNode(int v);
+Node* findNode(List* l, int v);
+int addLast(List* l, int v);
+int addFirst(List* l, int v);
+int addInOrder(List* l, int v);
+int removeValue(List* l, int v);
+int removeAllValues(List* l, int v);
+int containsValue(List* l, int v);
+int len(List* l);
+int findValueIndex(List* l, int v);
+int isEmpty(List* l);
+void printAll(List* l);
+int containsRepeatedNode(List* l);
+int allowRepeat(List* l);
+int denyRepeat(List* l)
+
+//===================================
+//                                   
+//   ####   #####   ####    #####  
+//  ##     ##   ##  ##  ##  ##     
+//  ##     ##   ##  ##  ##  #####  
+//  ##     ##   ##  ##  ##  ##     
+//   ####   #####   ####    #####  
+//                                   
+//===================================
+
+
 typedef struct _node
 {
     int value;
