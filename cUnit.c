@@ -12,8 +12,6 @@ int hasDecimal(float x)
 }
 float power(float x, float n)
 {
-    if(n==1)
-        return x;
     if(n == 0)
         return 1;
     if (n < 0)
@@ -27,6 +25,6 @@ float power(float x, float n)
 int main()
 {   
     
-    printf("result of x * n = %f\n", power(2, 0.2));
+    printf("result of x * n = %f\n", power(2, 2));
     return 0;
 }
