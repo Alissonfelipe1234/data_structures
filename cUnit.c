@@ -1,30 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "linked_list.c"
-
-float powf(float x, float y);
-
+//return the sum from first to last
+int arithmetic_progression_sum(int first, int last)
+{
+    if (first == last)
+        return last;
+    if  (first > last)
+        return 0;
+    return first + arithmetic_progression_sum(first+1, last);
+}
+//return true if the float has decimal numbers
 int hasDecimal(float x)
 {
     float integral = (int) x;
     return 0 != (x - integral);
 }
-float power(float x, float n)
+//return the power of base raised to n
+float power(int base, int exponent)
 {
-    if(n == 0)
+    if(exponent == 0)
         return 1;
-    if (n < 0)
-        return 1/(power(x, -n));
-    if (hasDecimal(n)) //insolve for this time
-        return 0;
-
-    return x * power(x, n-1);
+    if (exponent < 0)
+        return 1/(power(base, -exponent));
+    return base * power(base, exponent-1);
 }
-
+//return a number in base 10 to base 2
+int binary(int decimal){
+    if(decimal == 1)
+        return 1;
+    return (10 * binary(decimal/2)) + decimal%2;
+}
 int main()
 {   
     
-    printf("result of x * n = %f\n", power(2, 2));
+    printf("result %i\n", binary(111));
     return 0;
 }
