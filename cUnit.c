@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "linked_list.c"
-//return the sum from first to last
+//it return the sum from first to last
 int arithmetic_progression_sum(int first, int last)
 {
     if (first == last)
@@ -10,13 +10,13 @@ int arithmetic_progression_sum(int first, int last)
         return 0;
     return first + arithmetic_progression_sum(first+1, last);
 }
-//return true if the float has decimal numbers
+//it return true if the float has decimal numbers
 int hasDecimal(float x)
 {
     float integral = (int) x;
     return 0 != (x - integral);
 }
-//return the power of base raised to n
+//it return the power of base raised to exponent
 float power(int base, int exponent)
 {
     if(exponent == 0)
@@ -39,7 +39,24 @@ static unsigned long int int_binary(register int decimal){
     return (10 * int_binary(decimal/2)) + decimal%2;
 }
 
+void decimal_to_binary(register int decimal)
+{
+    if(decimal < 0)
+    {
+        printf("-");
+        return decimal_to_binary(decimal*-1);
+    }
+    if(decimal < 2)
+    {    
+        printf("%i", decimal); 
+        return;
+    }
+
+    decimal_to_binary(decimal/2);
+    printf("%i", decimal%2);    
+}
 int main()
 {   
+    decimal_to_binary(-10);
     return 0;
 }
