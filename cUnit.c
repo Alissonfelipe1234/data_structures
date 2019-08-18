@@ -25,15 +25,21 @@ float power(int base, int exponent)
         return 1/(power(base, -exponent));
     return base * power(base, exponent-1);
 }
-//return a number in base 10 to base 2
-int binary(int decimal){
+
+//given a int in base 10 will return a static unsigned long int into base 2
+//max decimal is 524287 or 1111111111111111111 in binary
+//!DISCONTINUED
+static unsigned long int int_binary(register int decimal){
+    if(decimal < 0)
+        return int_binary(decimal*-1);
+    if(decimal == 0)
+        return 0;
     if(decimal == 1)
         return 1;
-    return (10 * binary(decimal/2)) + decimal%2;
+    return (10 * int_binary(decimal/2)) + decimal%2;
 }
+
 int main()
 {   
-    
-    printf("result %i\n", binary(111));
     return 0;
 }
