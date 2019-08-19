@@ -58,7 +58,6 @@ void decimal_to_binary(register int decimal)
     decimal_to_binary(decimal/2);
     printf("%i", decimal%2);    
 }
-
 //!internal use only
 int vector_sum(int * vector, register int size)
 {
@@ -71,4 +70,44 @@ int vector_sum(int * vector, register int size)
 int sum(int** vector)
 {
     return vector_sum((int*)vector, (int)LEN(vector));
+}
+//it return the power of base raised to exponent for double cases, exponent is int
+double dpower(double base, int exponent)
+{
+    if(exponent == 0)
+        return 1;
+    if (exponent < 0)
+        return 1/(dpower(base, -exponent));
+
+    return base * dpower(base, exponent-1);
+}
+//!internal use only
+double tryRoot(register double argument, register int index, register double try, register double decimal_place)
+{
+    printf("%lf\n", decimal_place);
+    double tried = dpower(try, index);
+    if(fabs(tried - argument) == 0 || decimal_place <= 0.00000000001)
+        return try;
+    if(tried > argument)
+        return  tryRoot(argument, index, try-decimal_place, decimal_place/10);
+    return tryRoot(argument, index, try+decimal_place, decimal_place);
+}
+//it return the root of argument, index tells what root is being taken
+double root(register double argument, register int index)
+{
+    if(argument<0 && index%2 == 0)
+        return -1;
+    if(index<0)
+        return 1/root(argument, index);
+    return tryRoot(argument, index, 0, 1);
+}
+//it return the squared root of base
+double squared_root(register double base)
+{
+    return root(base, 2);
+}
+//it return the cube root of base
+double cube_root(register double base)
+{
+    return root(base, 3);
 }

@@ -4,5 +4,6 @@
 
 int main()
 {
+    printf("%lf", root(112,2));
     return 0;
 }
