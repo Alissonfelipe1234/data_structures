@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define LEN(x)  ((&x)[1] - x)
 /*
 please include '#include "myMath.c"' in your code
 */
@@ -30,7 +31,7 @@ float power(int base, int exponent)
 }
 //given a int in base 10 will return a static unsigned long int into base 2
 //max decimal is 524287 or 1111111111111111111 in binary
-//!DISCONTINUED
+//! DEPRECATED
 static unsigned long int int_binary(register int decimal){
     if(decimal < 0)
         return int_binary(decimal*-1);
@@ -56,4 +57,18 @@ void decimal_to_binary(register int decimal)
 
     decimal_to_binary(decimal/2);
     printf("%i", decimal%2);    
+}
+
+//!internal use only
+int vector_sum(int * vector, register int size)
+{
+    if(size == 1)
+        return vector[0];
+    return vector[size-1] + vector_sum(vector, size-1);
+}
+//it return the sum of array 2D's elements
+//! this functions need a cast in static arrays, use (int**)
+int sum(int** vector)
+{
+    return vector_sum((int*)vector, (int)LEN(vector));
 }
