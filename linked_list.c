@@ -11,18 +11,18 @@ please include '#include "linked_list.c"' in your code
 //                                                           
 //===========================================================
 
-typedef struct _node
+typedef struct _linked_node
 {
     int value;
-    struct _node *next;
-} Node;
+    struct _linked_node *next;
+} Linked_node;
 
-typedef struct _list
+typedef struct _linked_list
 {
-    Node *first;
-    Node *last;
+    Linked_node *first;
+    Linked_node *last;
     int denyDuplicate;
-} List;
+} Linked_list;
 
 //============================================================
 //                                                            
@@ -38,25 +38,25 @@ typedef struct _list
 
 #include<stdio.h>
 #include<stdlib.h>
-List* newList();
-List* cloneList(List* original);
-List* sortList(List* l);
-Node* newNodeEmpty();
-Node* newNode(int v);
-Node* findNode(List* l, int v);
-int addLast(List* l, int v);
-int addFirst(List* l, int v);
-int addInOrder(List* l, int v);
-int removeValue(List* l, int v);
-int removeAllValues(List* l, int v);
-int containsValue(List* l, int v);
-int len(List* l);
-int findValueIndex(List* l, int v);
-int isEmpty(List* l);
-void printAll(List* l);
-int containsRepeatedNode(List* l);
-int allowRepeat(List* l);
-int denyRepeat(List* l);
+Linked_list* newLinked_list();
+Linked_list* cloneLinked_list(Linked_list* original);
+Linked_list* sortLinked_list(Linked_list* l);
+Linked_node* newLinked_nodeEmpty();
+Linked_node* newLinked_node(int v);
+Linked_node* findLinked_node(Linked_list* l, int v);
+int addLast(Linked_list* l, int v);
+int addFirst(Linked_list* l, int v);
+int addInOrder(Linked_list* l, int v);
+int removeValue(Linked_list* l, int v);
+int removeAllValues(Linked_list* l, int v);
+int containsValue(Linked_list* l, int v);
+int len(Linked_list* l);
+int findValueIndex(Linked_list* l, int v);
+int isEmpty(Linked_list* l);
+void printAll(Linked_list* l);
+int containsRepeatedLinked_node(Linked_list* l);
+int allowRepeat(Linked_list* l);
+int denyRepeat(Linked_list* l);
 
 //===================================
 //                                   
@@ -69,22 +69,22 @@ int denyRepeat(List* l);
 //===================================
 
 
-List* newList(){
-    return (List*) calloc (1, sizeof(List));
+Linked_list* newLinked_list(){
+    return (Linked_list*) calloc (1, sizeof(Linked_list));
 }
-List* cloneList(List* original){
+Linked_list* cloneLinked_list(Linked_list* original){
 
-    List* newest = newList();
+    Linked_list* newest = newLinked_list();
     newest->denyDuplicate = original->denyDuplicate;
-    Node* p = original->first;
+    Linked_node* p = original->first;
     for(;p!=NULL;p=p->next)
         addLast(newest, p->value);
 
     return newest;
 }
-List* sortList(List* l){
-    Node* p = l->first;
-    List* newest = newList();
+Linked_list* sortLinked_list(Linked_list* l){
+    Linked_node* p = l->first;
+    Linked_list* newest = newLinked_list();
 
     while(p!= NULL)
     {
@@ -94,16 +94,16 @@ List* sortList(List* l){
     return newest;
 }
 
-Node* newNodeEmpty(){
-    return (Node*) calloc (1, sizeof(Node));
+Linked_node* newLinked_nodeEmpty(){
+    return (Linked_node*) calloc (1, sizeof(Linked_node));
 }
-Node* newNode(int v){
-    Node* ret = newNodeEmpty();
+Linked_node* newLinked_node(int v){
+    Linked_node* ret = newLinked_nodeEmpty();
     ret->value = v;
     return ret;
 }
-Node* findNode(List* l, int v){
-    Node* p;
+Linked_node* findLinked_node(Linked_list* l, int v){
+    Linked_node* p;
     p = l->first;
     while(p != NULL)
     {
@@ -114,11 +114,11 @@ Node* findNode(List* l, int v){
     return NULL;
 }
 
-int addLast(List* l, int v){
+int addLast(Linked_list* l, int v){
     if(l->denyDuplicate && containsValue(l, v))
         return 0;
 
-    Node* p = newNode(v);
+    Linked_node* p = newLinked_node(v);
     if(l->first == NULL)
     {
         l->first = p;
@@ -130,11 +130,11 @@ int addLast(List* l, int v){
     l->last = p;
     return 1;
 }
-int addFirst(List* l, int v){
+int addFirst(Linked_list* l, int v){
     if(l->denyDuplicate && containsValue(l, v))
         return 0;
 
-    Node* p = newNode(v);
+    Linked_node* p = newLinked_node(v);
     if(l->first == NULL)
         l->last = p;
 
@@ -142,11 +142,11 @@ int addFirst(List* l, int v){
     l->first = p;
     return 1;
 }
-int addInOrder(List* l, int v){
+int addInOrder(Linked_list* l, int v){
     if(l->denyDuplicate && containsValue(l, v))
         return 0;
 
-    Node* newest = newNode(v);
+    Linked_node* newest = newLinked_node(v);
     if(l->first == NULL)
     {
         l->first = newest;
@@ -164,8 +164,8 @@ int addInOrder(List* l, int v){
         return 1;
     }
 
-    Node* p = l->first->next;
-    Node* prev = l->first;
+    Linked_node* p = l->first->next;
+    Linked_node* prev = l->first;
     while (p->next != NULL)
     {
         if(p->value >= v)
@@ -179,8 +179,8 @@ int addInOrder(List* l, int v){
     }
     return 0;
 }
-int removeValue(List* l, int v){
-    Node* p;
+int removeValue(Linked_list* l, int v){
+    Linked_node* p;
     int size = len(l);
     if(size < 1)
         return 0;
@@ -203,7 +203,7 @@ int removeValue(List* l, int v){
         free(p);
         return 1;
     }
-    Node* prev;
+    Linked_node* prev;
     p = l->first->next;
     prev = l->first;
     while (p->next != NULL)
@@ -226,7 +226,7 @@ int removeValue(List* l, int v){
     }
     return 0;
 }
-int removeAllValues(List* l, int v){
+int removeAllValues(Linked_list* l, int v){
     int remove = 0;
     for(;removeValue(l,v);)
         remove = 1;
@@ -234,8 +234,8 @@ int removeAllValues(List* l, int v){
 }
 
 
-int containsValue(List* l, int v){
-    Node* p;
+int containsValue(Linked_list* l, int v){
+    Linked_node* p;
     p = l->first;
     while(p != NULL)
     {
@@ -245,27 +245,27 @@ int containsValue(List* l, int v){
     }
     return 0;
 }
-int len(List* l){
-    Node* p = l->first;
+int len(Linked_list* l){
+    Linked_node* p = l->first;
     int len = 1;
     for(; p->next != NULL; len++)
         p = p->next;
     return len;
 }
-int findValueIndex(List* l, int v){
+int findValueIndex(Linked_list* l, int v){
     if(len(l) <= v)
         return -1;
-    Node* p = l->first;
+    Linked_node* p = l->first;
     for(int index = 0; index <= v; index++)
         p = p->next;
     return p->value;
 }
-int isEmpty(List* l){
+int isEmpty(Linked_list* l){
     return l->first == NULL && l->last == NULL;
 }
 
-void printAll(List* l){
-    Node* p = l->first;
+void printAll(Linked_list* l){
+    Linked_node* p = l->first;
     printf("[");
     if(l->last == NULL)
     {
@@ -280,22 +280,22 @@ void printAll(List* l){
     printf("%i]", l->last->value);
 }
 
-int containsRepeatedNode(List* l){
-    Node* slower = l->first;
-    Node* faster = slower->next;
+int containsRepeatedLinked_node(Linked_list* l){
+    Linked_node* slower = l->first;
+    Linked_node* faster = slower->next;
     for(; slower != NULL; slower = slower->next)
         for(faster = slower->next; faster != NULL; faster = faster->next)
             if(slower->value == faster->value)
                 return 1;
     return 0;
 }
-int allowRepeat(List* l)
+int allowRepeat(Linked_list* l)
 {
     l->denyDuplicate = 0;
     return 1;
 }
-int denyRepeat(List* l){
-    if(containsRepeatedNode(l))
+int denyRepeat(Linked_list* l){
+    if(containsRepeatedLinked_node(l))
         return 0;
     l->denyDuplicate = 1;
     return 1;
