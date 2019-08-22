@@ -20,9 +20,9 @@ typedef struct _doubly_node
 
 typedef struct _doubly_list
 {
+    int size;
     doubly_node *first;
     doubly_node *last;
-    int denyDuplicate;
 } doubly_list;
 
 //============================================================
@@ -39,18 +39,18 @@ typedef struct _doubly_list
 #include<stdlib.h>
 doubly_list* newdoubly_list();
 doubly_list* clonedoubly_list(doubly_list* original);
-doubly_list* sortlinked_list(doubly_list* l); //! not implemented
+doubly_list* sort_doubly_list(doubly_list* l);
 doubly_node* newdoubly_node_empty();
 doubly_node* newdoubly_node(int v);
-doubly_node* find_doubly_node(doubly_list* l, int v);
-int add_last(doubly_list* l, int v);
-int add_first(doubly_list* l, int v);
-int remove_value(doubly_list* l, int v);
-int contains_value(doubly_list* l, int v);
-int len(doubly_list* l);
-int find_value_index(doubly_list* l, int v);  //! not implemented
-int is_empty(doubly_list* l); //! not implemented
-void print_all(doubly_list* l); 
+doubly_node* indexof_doubly(doubly_list* l, int x);
+int add_last_doubly(doubly_list* l, int v);
+int add_first_doubly(doubly_list* l, int v);
+int add_in_order_doubly(doubly_list* l, int v);
+int remove_doubly_value(doubly_list* l, int v);
+int contains_doubly_value(doubly_list* l, int v);
+int doubly_len(doubly_list* l);
+int is_doubly_empty(doubly_list* l); //! not implemented
+void print_doubly(doubly_list* l); 
 
 //===================================
 //                                   
@@ -66,14 +66,25 @@ doubly_list* newdoubly_list(){
     return (doubly_list*) calloc (1, sizeof(doubly_list));
 }
 doubly_list* clonedoubly_list(doubly_list* original){
-
     doubly_list* newest = newdoubly_list();
-    newest->denyDuplicate = original->denyDuplicate;
     doubly_node* p = original->first;
     for(;p!=NULL;p=p->next)
-        add_last(newest, p->value);
-
+        add_last_doubly(newest, p->value);
     return newest;
+}
+doubly_list* sort_doubly_list(doubly_list* l){
+    if (l == NULL)
+     return NULL;
+    if (l->size == 0)
+        return  l;
+    doubly_list* newest = newdoubly_list();
+    doubly_node* p = l->first;
+    while (p!=NULL)
+    {
+        add_in_order_doubly(newest, p->value);
+        p = p->next;
+    }
+    return newest;    
 }
 doubly_node* newdoubly_node_empty(){
     return (doubly_node*) calloc (1, sizeof(doubly_node));
@@ -83,22 +94,27 @@ doubly_node* newdoubly_node(int v){
     ret->value = v;
     return ret;
 }
-doubly_node* find_doubly_node(doubly_list* l, int v){
+doubly_node* indexof_linked(doubly_list* l, int x){
     doubly_node* p;
-    p = l->first;
-    while(p != NULL)
+    if(x <= l->size/2)
     {
-        if(v == p->value)
-            return p;
-        p = p->next;
+        p = l->first;
+        for (int i = 0; i < x; i++)
+            p = p->next;
     }
-    return NULL;
+    else
+    {
+        p = l->last;
+        for (int i = l->size; i >= x; i--)
+            p = p->prev;
+    }
+        
+    return p;
 }
-int add_last(doubly_list* l, int v){
-    if(l->denyDuplicate && contains_value(l, v))
-        return 0;
+int add_last_doubly(doubly_list* l, int v){
 
     doubly_node* p = newdoubly_node(v);
+    l->size++;
     if(l->first == NULL)
     {
         l->first = p;
@@ -111,9 +127,10 @@ int add_last(doubly_list* l, int v){
     l->last = p;
     return 1;
 }
-int add_first(doubly_list* l, int v){
+int add_first_doubly(doubly_list* l, int v){
 
     doubly_node* p = newdoubly_node(v);
+    l->size++;
     if(l->first == NULL)
     {
         l->last = p;
@@ -126,9 +143,44 @@ int add_first(doubly_list* l, int v){
     l->first = p;
     return 1;
 }
-int remove_value(doubly_list* l, int v){
+int add_in_order_doubly(doubly_list* l, int v){
+    doubly_node* newest = newdoubly_node(v);
+    if(l->first == NULL)
+    {
+        l->first = newest;
+        l->last = newest;
+        l->size++;
+        return 1;
+    }
+    if(l->first->value >= v)
+    {
+        add_first_doubly(l, v);
+        return 1;
+    }
+    if(l->last->value <= v)
+    {
+        add_last_doubly(l, v);
+        return 1;
+    }
+    doubly_node* p = l->first->next;
+    while (p->next != NULL)
+    {
+        if(p->value >= v)
+        {
+            newest->next = p;
+            newest->prev = p->prev;
+            p->prev->next = newest;
+            p->prev = newest;
+            l->size++;
+            return 1;
+        }
+        p = p->next;
+    }
+    return 0;
+}
+int remove_doubly_value(doubly_list* l, int v){
     doubly_node* p;
-    int size = len(l);
+    int size = doubly_len(l);
     if(size < 1)
         return 0;
     if(size == 1)
@@ -141,6 +193,7 @@ int remove_value(doubly_list* l, int v){
         p = l->last;
         free(p);
         l->last = NULL;
+        l->size--;
         return 1;
     }
     if(l->first->value == v)
@@ -149,6 +202,7 @@ int remove_value(doubly_list* l, int v){
         l->first = p->next;
         l->first->prev = NULL;
         free(p);
+        l->size--;
         return 1;
     }
 
@@ -160,6 +214,7 @@ int remove_value(doubly_list* l, int v){
             p->prev = p->next;
             p->next = p->prev;
             free(p);
+            l->size--;
             return 1;
         }
         p = p->next;
@@ -171,11 +226,12 @@ int remove_value(doubly_list* l, int v){
         l->last = l->last->prev;
         l->last->next = NULL;
         free(p);
+        l->size--;
         return 1;
     }
     return 0;
 }
-int contains_value(doubly_list* l, int v){
+int contains_doubly_value(doubly_list* l, int v){
     doubly_node* p;
     p = l->first;
     while(p != NULL)
@@ -186,14 +242,10 @@ int contains_value(doubly_list* l, int v){
     }
     return 0;
 }
-int len(doubly_list* l){
-    doubly_node* p = l->first;
-    int len = 1;
-    for(; p->next != NULL; len++)
-        p = p->next;
-    return len;
+int doubly_len(doubly_list* l){
+    return l->size;
 }
-void print_all(doubly_list* l){
+void print_doubly(doubly_list* l){
     doubly_node* p = l->first;
     printf("[");
     if(l->last == NULL)
