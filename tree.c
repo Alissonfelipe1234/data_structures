@@ -11,17 +11,11 @@
 //                                                           
 //===========================================================
 
-typedef struct _node
-{
-    int value;
-    struct _node *right;
-    struct _node *left;
-} Node;
-
 typedef struct _tree
 {
-    Node* root;
-
+    int value;
+    struct _tree *right;
+    struct _tree *left;
 } Tree;
 
 //============================================================
@@ -36,16 +30,15 @@ typedef struct _tree
 
 #include<stdio.h>
 #include<stdlib.h>
-Tree* newTree();
+Tree* newTree(int value);
 Tree* cloneTree(Tree* original);
+void insertLeave(int value, Tree* root);
+
+
+
 Tree* sortTree(Tree* l);
-Node* newNodeEmpty();
-Node* newNode(int v);
-Node* findNode(Tree* l, int v);
-int addRight(Node* l, int v);
-int addLeft(Node* l, int v);
-int addInOrder(Tree* l, int v);
-int removeValue(Node* l, int v);
+Tree* findNode(Tree* l, int v);
+int removeValue(Tree* l, int v);
 int removeAllOccurrences(Tree* l, int v);
 int containsValue(Tree* l, int v);
 int len(Tree* l);
@@ -62,3 +55,9 @@ void printAll(Tree* l);
 //   ####   #####   ####    #####  
 //                                   
 //===================================
+Tree* newTree(int value){
+    return (Tree*) calloc(1, sizeof(Tree));
+}
+void insertLeave(int value, Tree* root){
+    
+}
