@@ -61,10 +61,21 @@ Tree* newTree(int value){
     return newest;
 }
 
-void insertLeave(register int value, register Tree* root){
-    if(root==NULL) root = newTree(value);
-    else if(root->value < value) insertLeave(value, root->right);
-    else insertLeave(value, root->left);
+void insertLeave(int value, Tree* root){
+    if(root->value < value) 
+    {
+        if(root->right != NULL)
+            insertLeave(value, root->right);
+        else 
+            root->right = newTree(value);
+    }
+    else 
+    {
+        if(root->left != NULL)
+            insertLeave(value, root->left);
+        else
+            root->left = newTree(value);
+    }
 }
 void printTree(Tree* root) {
     if(root==NULL)
