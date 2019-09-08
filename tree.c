@@ -94,3 +94,11 @@ void printTreePostOrder(Tree* root) {
     printTreePostOrder(root->right);
     printf(" %i", root->value);
 }
+
+void printTreePreOrder(Tree* root) {
+    if(root==NULL)
+        return;
+    printf(" %i", root->value);
+    printTreePreOrder(root->left);    
+    printTreePreOrder(root->right);
+}
