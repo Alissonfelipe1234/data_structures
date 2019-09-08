@@ -33,18 +33,19 @@ typedef struct _tree
 Tree* newTree(int value);
 Tree* cloneTree(Tree* original);
 void insertLeave(int value, Tree* root);
+void printTree(Tree* root);
+void printTreePreOrder(Tree* root);
+void printTreePreOrder(Tree* root);
+int hasValue(int value, Tree* root);
+int len(Tree* root);
+Tree* balanceTree(Tree* root);
 
-
-
-Tree* sortTree(Tree* l);
-Tree* findNode(Tree* l, int v);
 int removeValue(Tree* l, int v);
 int removeAllOccurrences(Tree* l, int v);
 int containsValue(Tree* l, int v);
-int len(Tree* l);
+
 int findLevel(Tree* l, int v);
 int isEmpty(Tree* l);
-void printTree(Tree* l);
 
 //===================================
 //                                   
@@ -77,6 +78,7 @@ void insertLeave(int value, Tree* root){
             root->left = newTree(value);
     }
 }
+
 void printTree(Tree* root) {
     if(root==NULL)
         return;
@@ -84,14 +86,11 @@ void printTree(Tree* root) {
     printf(" %i", root->value);
     printTree(root->right);
 }
-int main()
-{
-    Tree* teste = newTree(5);
-    insertLeave(1, teste);
-    insertLeave(2, teste);
-    insertLeave(3, teste);
-    insertLeave(4, teste);
-    insertLeave(6, teste);
-    printTree(teste);
-    return 0;
+
+void printTreePostOrder(Tree* root) {
+    if(root==NULL)
+        return;
+    printTreePostOrder(root->left);
+    printTreePostOrder(root->right);
+    printf(" %i", root->value);
 }
