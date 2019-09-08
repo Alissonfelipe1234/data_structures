@@ -36,7 +36,9 @@ void insertLeave(int value, Tree* root);
 void printTree(Tree* root);
 void printTreePreOrder(Tree* root);
 void printTreePreOrder(Tree* root);
+void printTreeLeved(Tree* root, int order);
 int hasValue(int value, Tree* root);
+int isBalanced(Tree* root);
 int len(Tree* root);
 Tree* balanceTree(Tree* root);
 
@@ -64,19 +66,9 @@ Tree* newTree(int value){
 
 void insertLeave(int value, Tree* root){
     if(root->value < value) 
-    {
-        if(root->right != NULL)
-            insertLeave(value, root->right);
-        else 
-            root->right = newTree(value);
-    }
-    else 
-    {
-        if(root->left != NULL)
-            insertLeave(value, root->left);
-        else
-            root->left = newTree(value);
-    }
+        root->right == NULL ? root->right = newTree(value) : insertLeave(value, root->right);
+    else
+        root->left == NULL ? root->left = newTree(value) : insertLeave(value, root->left);
 }
 
 void printTree(Tree* root) {
@@ -103,6 +95,15 @@ void printTreePreOrder(Tree* root) {
     printTreePreOrder(root->right);
 }
 
+void printTreeLeved(Tree* root, int order) {
+    if(root==NULL)
+        return;
+    int next = order+1;
+    printTreeLeved(root->left, next);
+    printf(" %i (%i)\n", root->value, order);
+    printTreeLeved(root->right, next);
+}
+
 int hasValue(int value, Tree* root){
     if(root == NULL)
         return 0;
@@ -114,8 +115,79 @@ int hasValue(int value, Tree* root){
         return hasValue(value, root->right);
 }
 
+int isBalanced(Tree* root){
+    if (root==NULL)
+        return 1;
+    return 
+        isBalanced(root->left) && 
+        isBalanced(root->right) && 
+        (len(root->left) - len(root->right) <= 1);
+}
+
 int len(Tree* root){
     if(root==NULL)
         return 0;
     return 1 + len(root->left) + len(root->right);
+}
+
+Tree* balanceTreeInternal(Tree* root, int half, int left, int right){
+    if (half == 0)
+        return newTree(root->value);
+    else if(half > left)
+    {
+        Tree* branch = balanceTreeInternal(root->right, half--, len(root->right->left), len(root->right->left));
+        insertLeave (root->value, branch);
+        return branch;
+    }
+    else
+    {
+        Tree* branch = balanceTreeInternal(root->left, half--, len(root->left->left), len(root->left->left));
+        insertLeave (root->value, branch);
+        return branch;
+    }    
+    
+    /*
+    if(half == 0)
+        return newTree(root->value);
+
+    half--;
+    if(root->left!=NULL)
+    {
+        Tree* branch = balanceTreeInternal(root->left, half);
+        insertLeave(root->value, branch);
+        return branch;
+    }
+    else if (root->right!=NULL)
+    {
+        Tree* branch = balanceTreeInternal(root->right, half);
+        insertLeave(root->value, branch);
+        return branch;
+    }
+    else
+    {
+        Tree* branch = balanceTreeInternal(root->right, half++);
+        insertLeave(root->value, branch);
+        return branch;
+    }
+    */
+}
+
+Tree* balanceTree(Tree* root){
+    return balanceTreeInternal(root, len(root), len(root->left), len(root->left));;
+}
+
+int main()
+{
+    Tree* teste = newTree(5);
+    insertLeave(4, teste);
+    insertLeave(8, teste);
+    insertLeave(1, teste);
+    insertLeave(5, teste);
+    insertLeave(9, teste);
+    if(isBalanced(teste))
+        printf("Está balanceada");
+    else
+        printf("Não está balanceada");
+    printTreeLeved(teste, 0);
+    return 0;
 }
