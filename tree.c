@@ -102,3 +102,20 @@ void printTreePreOrder(Tree* root) {
     printTreePreOrder(root->left);    
     printTreePreOrder(root->right);
 }
+
+int hasValue(int value, Tree* root){
+    if(root == NULL)
+        return 0;
+    if(root->value == value)
+        return 1;
+    if(root->value > value)
+        return hasValue(value, root->left);
+    else
+        return hasValue(value, root->right);
+}
+
+int len(Tree* root){
+    if(root==NULL)
+        return 0;
+    return 1 + len(root->left) + len(root->right);
+}
