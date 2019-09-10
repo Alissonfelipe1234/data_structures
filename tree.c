@@ -165,6 +165,12 @@ int len(Tree* root){
         return 0;
     return 1 + len(root->left) + len(root->right);
 }
+
+void fixIt(Tree* root, Tree* left, Tree* right)
+{
+    root->left = left;
+    root->right = right;
+}
 int main()
 {
     Tree* teste = newTree(5);
@@ -172,7 +178,7 @@ int main()
     insertLeave(8, teste);
     insertLeave(1, teste);
     insertLeave(5, teste);
-    insertLeave(9, teste);
+    insertLeave(7, teste);
     if(isBalanced(teste))
         printf("Está balanceada");
     else
