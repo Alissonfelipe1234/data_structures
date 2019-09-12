@@ -45,8 +45,8 @@ int hasValue(int value, Tree* root);
 int isBalanced(Tree* root);
 int len(Tree* root);
 Tree* balanceTree(Tree* root);
+int removeValue(int value, Tree* root);
 
-int removeValue(Tree* l, int v);
 int removeAllOccurrences(Tree* l, int v);
 int containsValue(Tree* l, int v);
 
@@ -166,19 +166,51 @@ int len(Tree* root){
     return 1 + len(root->left) + len(root->right);
 }
 
+void GlueIt(Tree* left, Tree* right){
+    if(left == NULL && right == NULL)
+        return;
+    if (left->right == NULL)
+        left->right = right;
+    else
+        GlueIt(left->left, right);
+}
+
 void fixIt(Tree* root, Tree* left, Tree* right)
 {
-    root->left = left;
-    root->right = right;
+    GlueIt(left, right);
+    if (left->value>root->value)
+        root->right = left;
+    else
+        root->left = left;
+}
+
+int removeValueInternal(int value, Tree* root, Tree* prev)
+{
+    if (root == NULL)
+        return 0;
+    if(value == root->value)
+    {
+        fixIt(prev, root->left, root->right);
+        return 1;
+    }
+    if(value > root->value)
+        return removeValueInternal(value, root->right, root);
+    else
+        return removeValueInternal(value, root->left, root);    
 }
 int main()
 {
     Tree* teste = newTree(5);
     insertLeave(4, teste);
-    insertLeave(8, teste);
+    insertLeave(10, teste);
     insertLeave(1, teste);
-    insertLeave(5, teste);
+    insertLeave(11, teste);
+    insertLeave(9, teste);
+    insertLeave(0, teste);
+    insertLeave(12, teste);
     insertLeave(7, teste);
+    insertLeave(8, teste);
+    //removeValueInternal(, teste, NULL);
     if(isBalanced(teste))
         printf("Está balanceada");
     else
