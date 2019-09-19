@@ -44,6 +44,8 @@ void printTree2D(Tree* root);
 int hasValue(int value, Tree* root);
 int isBalanced(Tree* root);
 int len(Tree* root);
+int nivel(Tree* root);
+int max(int left, int right);
 Tree* balanceTree(Tree* root);
 int removeValue(int value, Tree* root);
 
@@ -54,13 +56,13 @@ int findLevel(Tree* l, int v);
 int isEmpty(Tree* l);
 
 //===================================
-//                                   
+//                                 
 //   ####   #####   ####    #####  
 //  ##     ##   ##  ##  ##  ##     
 //  ##     ##   ##  ##  ##  #####  
 //  ##     ##   ##  ##  ##  ##     
 //   ####   #####   ####    #####  
-//                                   
+//                                 
 //===================================
 Tree* newTree(int value){
     Tree* newest =  (Tree*) calloc(1, sizeof(Tree));
@@ -160,10 +162,26 @@ int isBalanced(Tree* root){
         (len(root->left) - len(root->right) <= 1);
 }
 
+int balanceFactor(Tree* root){
+    if (root==NULL)
+        return 0;
+    return nivel(root->left) - nivel(root->right);
+}
+
 int len(Tree* root){
     if(root==NULL)
         return 0;
     return 1 + len(root->left) + len(root->right);
+}
+
+int nivel(Tree* root){
+    if(root==NULL)
+        return 0;
+    return 1 + max(nivel(root->left), nivel(root->right));
+}
+
+int max(int left, int right){
+    return left > right? left: right;
 }
 
 void GlueIt(Tree* left, Tree* right){
@@ -200,21 +218,16 @@ int removeValueInternal(int value, Tree* root, Tree* prev)
 }
 int main()
 {
-    Tree* teste = newTree(5);
-    insertLeave(4, teste);
-    insertLeave(10, teste);
-    insertLeave(1, teste);
+    Tree* teste = newTree(19);
     insertLeave(11, teste);
-    insertLeave(9, teste);
-    insertLeave(0, teste);
+    insertLeave(20, teste);
+    insertLeave(10, teste);
     insertLeave(12, teste);
-    insertLeave(7, teste);
-    insertLeave(8, teste);
+    insertLeave(20, teste);
+    insertLeave(25, teste);
+    insertLeave(19, teste);
     //removeValueInternal(, teste, NULL);
-    if(isBalanced(teste))
-        printf("Está balanceada");
-    else
-        printf("Não está balanceada");
+    printf("%i", balanceFactor(teste));
     printTree2D(teste);
     return 0;
 }
