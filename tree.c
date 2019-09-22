@@ -33,6 +33,8 @@ typedef struct _tree
 
 Tree* newTree(int value);
 Tree* cloneTree(Tree* original);
+Tree* balanceTree(Tree* root);
+
 void insertLeave(int value, Tree* root);
 void printTree(Tree* root);
 void printTreePreOrder(Tree* root);
@@ -46,7 +48,7 @@ int isBalanced(Tree* root);
 int len(Tree* root);
 int nivel(Tree* root);
 int max(int left, int right);
-Tree* balanceTree(Tree* root);
+int removeValueInternal(int value, Tree* root, Tree* prev, int direction);
 int removeValue(int value, Tree* root);
 
 int removeAllOccurrences(Tree* l, int v);
@@ -183,51 +185,94 @@ int nivel(Tree* root){
 int max(int left, int right){
     return left > right? left: right;
 }
-
-void GlueIt(Tree* left, Tree* right){
-    if(left == NULL && right == NULL)
-        return;
-    if (left->right == NULL)
-        left->right = right;
-    else
-        GlueIt(left->left, right);
-}
-
-void fixIt(Tree* root, Tree* left, Tree* right)
-{
-    GlueIt(left, right);
-    if (left->value>root->value)
-        root->right = left;
-    else
-        root->left = left;
-}
-
-int removeValueInternal(int value, Tree* root, Tree* prev)
-{
-    if (root == NULL)
+int removeValueInternal(int value, Tree* root, Tree* prev, int direction){
+    if(root==NULL)
         return 0;
-    if(value == root->value)
+    if(root->value == value)
     {
-        fixIt(prev, root->left, root->right);
-        return 1;
+        if(prev == NULL)
+        {
+            Tree* root_left = root->left;
+            Tree* root_right = root->right;
+            Tree* root_aux = root;
+            while(root_right->left!=NULL)
+                root_right = root_right->left;
+            root_right->left = root_left;
+            prev = root->right;
+            free(root_aux);
+            return 1;
+        }
+        if(root->left == NULL && root->right == NULL)
+        {
+            
+            if(direction == 2)
+                prev->right = NULL;
+            else
+                prev->left = NULL;
+            free(root);
+            return 1;
+        }
+        if(root->left == NULL)
+        {
+            if(direction == 1)
+                prev->left = root->right;
+            else
+                prev->right = root->right;
+            free(root);
+            return 1;
+        }
+        if(root->right == NULL)
+        {
+            if(direction == 1)
+                prev->left = root->left;
+            else
+                prev->right = root->left;
+            free(root);
+            return 1;
+        }
+        Tree* left_pointer;
+        Tree* right_pointer;
+        if(direction == 1)
+        {
+            left_pointer = prev->left->left;
+            right_pointer = prev->left->right;
+            while(right_pointer->left!=NULL)
+                right_pointer = right_pointer->left;
+            right_pointer->left = left_pointer;
+            prev->left = prev->left->right;
+            free(root);
+            return 1;
+        }
+        else
+        {
+            right_pointer = prev->right->right;
+            left_pointer = prev->right->left;            
+            while(left_pointer->right!=NULL)
+                left_pointer = left_pointer->right;
+            left_pointer->right = right_pointer;
+            prev->right = prev->right->left;
+            free(root);
+            return 1;
+        }
+        
     }
-    if(value > root->value)
-        return removeValueInternal(value, root->right, root);
-    else
-        return removeValueInternal(value, root->left, root);    
+    return root->value > value? removeValueInternal(value, root->left, root, 1): removeValueInternal(value, root->right, root, 2);
 }
+int removeValue(int value, Tree* root){
+    return removeValueInternal(value, root, root, 0);
+}
+
 int main()
 {
     Tree* teste = newTree(19);
     insertLeave(11, teste);
-    insertLeave(20, teste);
+    insertLeave(21, teste);
     insertLeave(10, teste);
     insertLeave(12, teste);
     insertLeave(20, teste);
     insertLeave(25, teste);
     insertLeave(19, teste);
-    //removeValueInternal(, teste, NULL);
-    printf("%i", balanceFactor(teste));
+    removeValue(25, teste);
     printTree2D(teste);
     return 0;
 }
