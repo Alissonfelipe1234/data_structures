@@ -49,7 +49,7 @@ int len(Tree* root);
 int nivel(Tree* root);
 int max(int left, int right);
 int removeValueInternal(int value, Tree* root, Tree* prev, int direction);
-int removeValue(int value, Tree* root);
+int removeValue(int value, Tree** root);
 
 int removeAllOccurrences(Tree* l, int v);
 int containsValue(Tree* l, int v);
@@ -112,6 +112,8 @@ void printTreeLevedInternal(Tree* root, int order) {
     printTreeLevedInternal(root->right, next);
 }
 void printTreeLeved(Tree* root){
+    if(root == NULL)
+        printf("Empty Tree\n");
     printTreeLevedInternal(root, 0);
 }
 
@@ -141,7 +143,9 @@ void printTree2Dinternal(Tree* root, int space) {
 
 void printTree2D(Tree *root) 
 { 
-   printTree2Dinternal(root, 0); 
+    if(root == NULL)
+        printf("Empty Tree\n");
+    printTree2Dinternal(root, 0); 
 } 
 
 int hasValue(int value, Tree* root){
@@ -191,17 +195,7 @@ int removeValueInternal(int value, Tree* root, Tree* prev, int direction){
     if(root->value == value)
     {
         if(prev == NULL)
-        {
-            Tree* root_left = root->left;
-            Tree* root_right = root->right;
-            Tree* root_aux = root;
-            while(root_right->left!=NULL)
-                root_right = root_right->left;
-            root_right->left = root_left;
-            prev = root->right;
-            free(root_aux);
-            return 1;
-        }
+            return 0;
         if(root->left == NULL && root->right == NULL)
         {
             
@@ -258,21 +252,57 @@ int removeValueInternal(int value, Tree* root, Tree* prev, int direction){
     }
     return root->value > value? removeValueInternal(value, root->left, root, 1): removeValueInternal(value, root->right, root, 2);
 }
-int removeValue(int value, Tree* root){
-    return removeValueInternal(value, root, root, 0);
+int removeValue(int value, Tree** root){
+    if((*root) == NULL)
+        return 0;
+    if((*root)->value == value)
+    {
+        if((*root)->left == NULL && (*root)->right == NULL)
+        {
+            free(*root);
+            *root = NULL;
+            return 1;
+        }
+        Tree* aux = *root;
+        if((*root)->left == NULL)
+        {
+            *root = (*root)->right;
+            free(aux);
+            aux = NULL;
+            return 1;
+        }
+        if((*root)->right == NULL)
+        {
+            *root = (*root)->left;
+            free(aux);
+            aux = NULL;
+            return 1;
+        }
+        Tree* successor  = aux->right;
+        int levels = 0;
+        while (successor->left!=NULL)
+        {
+            levels++;
+            aux = successor;
+            successor = successor->left;
+        }
+        (*root)->value = successor->value--; //new root is successor minus 1 because the successor must be greater than the root
+        removeValueInternal(successor->value, *root, NULL, 0);
+        (*root)->value++; //return the root true value
+        return 1;
+    }
+    return removeValueInternal(value, *root, NULL, 0);
 }
-
 int main()
 {
-    Tree* teste = newTree(19);
-    insertLeave(11, teste);
-    insertLeave(21, teste);
+    Tree* teste = newTree(20);
     insertLeave(10, teste);
-    insertLeave(12, teste);
-    insertLeave(20, teste);
-    insertLeave(25, teste);
-    insertLeave(19, teste);
-    removeValue(25, teste);
+    insertLeave(30, teste);
+    insertLeave(40, teste);
+    insertLeave(40, teste);
+    insertLeave(22, teste);
+    insertLeave(22, teste);
+    removeValue(23, &teste);
     printTree2D(teste);
     return 0;
 }
