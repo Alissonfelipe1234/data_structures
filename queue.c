@@ -70,6 +70,8 @@ Queue* newQueue(){
 }
 Queue* cloneQueue(Queue* original)
 {
+    if(original == NULL || original->size == 0)
+        return newQueue();
     Queue* ret = (Queue*) calloc(1, sizeof(Queue));
     int value;
     for (int i = 0; i < queue_len(original); i++)
