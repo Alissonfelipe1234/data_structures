@@ -37,13 +37,15 @@ typedef struct _queue
 #include<stdlib.h>
 Queue* newQueue();
 Queue* cloneQueue(Queue* original);
-Queue* sort_Queue(Queue* q);
+
 QueueNode* newNode(int v);
 QueueNode* find_Node(Queue* q, int value);
 QueueNode* pop_node(Queue* q);
 
 int add_value(Queue* q, int value);
 int add_node(Queue* q, QueueNode* n);
+int add_sortQueueNode(Queue* q, QueueNode* n);
+int sort_Queue(Queue* q);
 int pop_value(Queue* q);
 
 
@@ -77,10 +79,6 @@ Queue* cloneQueue(Queue* original)
         add_value(ret, value);
     }
     return ret;
-}
-Queue* sort_Queue(Queue* q){
-    return q;
-    //NOT IMPLEMENTED    
 }
 QueueNode* newNode(int v){
     QueueNode* ret = (QueueNode*) calloc(1, sizeof(QueueNode));
@@ -136,6 +134,51 @@ int add_node(Queue* q, QueueNode* n){
     q->last = n;
     return 1;
 }
+int add_sortQueueNode(Queue* q, QueueNode* n){
+    if(q == NULL || n == NULL)
+        return 0;
+    if(q->size == 0)
+    {
+        q->first = n;
+        q->last = n;
+        q->size++;
+        return 1;
+    }
+    if(q->first->value >= n->value)
+    {
+        n->next = q->first;
+        q->first = n;
+        q->size++;
+        return 1;
+    }
+    if(q->last->value <= n->value)
+        return add_node(q,n);
+    
+    QueueNode* point = q->first;
+    while (point->value < n->value)
+        point = point->next;
+    
+    n->next = point->next;
+    point->next = n;
+    q->size++;
+    return 1;
+}
+int sort_Queue(Queue* q){
+    if(q == NULL)
+        return 0;
+    if(q->size == 1)
+        return 1;
+    
+    Queue* empty = newQueue();
+    while (q->size > 0)
+        add_sortQueueNode(empty, pop_node(q));
+    q->first = empty->first;
+    q->last = empty->last;
+    q->size = empty->size;
+    free(empty);
+    return q;
+    //NOT IMPLEMENTED    
+}
 int pop_value(Queue* q){
     if(q == NULL)
         return 0;
@@ -164,7 +207,6 @@ int contains_queue_value(Queue* q, int v){
 int queue_len(Queue* l){
     return l->size;
 }
-
 void clear_Node(QueueNode* n){
     n->next = NULL;
 }
