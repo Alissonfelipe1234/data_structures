@@ -126,6 +126,7 @@ int add_node(Queue* q, QueueNode* n){
     if(q == NULL || n == NULL)
         return 0;
     clear_Node(n);
+    q->size++;
     if(q->last == NULL)
     {
         q->last = n;
