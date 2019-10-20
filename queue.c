@@ -50,7 +50,7 @@ int pop_value(Queue* q);
 
 
 int contains_queue_value(Queue* q, int v);
-int queue_len(Queue* l);
+int queue_len(Queue* q);
 
 void clear_Node(QueueNode* n);
 void printQueue(Queue* q);
@@ -209,8 +209,8 @@ int contains_queue_value(Queue* q, int v){
     }
     return ret;
 }
-int queue_len(Queue* l){
-    return l->size;
+int queue_len(Queue* q){
+    return q->size;
 }
 void clear_Node(QueueNode* n){
     n->next = NULL;
