@@ -194,6 +194,8 @@ int pop_value(Queue* q){
     return ret;
 }
 int contains_queue_value(Queue* q, int v){
+    if(q == NULL)
+        return 0;
     int walk = 0;
     int ret = 0;
     int total = q->size;
