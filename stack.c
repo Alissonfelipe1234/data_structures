@@ -180,6 +180,6 @@ void printStack(Stack* s)
             printf("%i\n", n->value);
             n = n->prev;
         }
-        printf("▀\n");
+        printf("❎\n");
     }
 }
