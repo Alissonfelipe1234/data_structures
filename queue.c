@@ -224,11 +224,11 @@ void printQueue(Queue* q)
     }
     int i;
     QueueNode* n = q->first;
-    printf("[");
+    printf("⬇\n");
     for (i=0; i < q->size-1; i++)
     {
-        printf("%i, ", n->value);
+        printf("%i\n", n->value);
         n = n->next;
     }
-    printf("%i]\n", n->value);
+    printf("%i\n❎", n->value);
 }
