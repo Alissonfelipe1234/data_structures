@@ -35,25 +35,25 @@ typedef struct _queue
 
 #include<stdio.h>
 #include<stdlib.h>
-Queue* newQueue();
-Queue* cloneQueue(Queue* original);
+Queue* new_queue();
+Queue* clone_queue(Queue* original);
 
-QueueNode* newNode(int v);
-QueueNode* find_Node(Queue* q, int value);
-QueueNode* pop_node(Queue* q);
+QueueNode* new_node_queue(int v);
+QueueNode* find_node_queue(Queue* q, int value);
+QueueNode* pop_node_queue(Queue* q);
 
-int add_value(Queue* q, int value);
-int add_node(Queue* q, QueueNode* n);
-int add_sortQueueNode(Queue* q, QueueNode* n);
-int sort_Queue(Queue* q);
-int pop_value(Queue* q);
+int add_value_queue(Queue* q, int value);
+int add_node_queue(Queue* q, QueueNode* n);
+int add_sort_node_queue(Queue* q, QueueNode* n);
+int sort_queue(Queue* q);
+int pop_value_queue(Queue* q);
 
 
-int contains_queue_value(Queue* q, int v);
+int contains_value_in_queue(Queue* q, int v);
 int queue_len(Queue* q);
 
-void clear_Node(QueueNode* n);
-void printQueue(Queue* q);
+void clear_node_queue(QueueNode* n);
+void print_queue(Queue* q);
 
 //===================================
 //                                   
@@ -65,67 +65,67 @@ void printQueue(Queue* q);
 //                                   
 //===================================
 
-Queue* newQueue(){
+Queue* new_queue(){
     return (Queue*) calloc(1, sizeof(Queue));
 }
-Queue* cloneQueue(Queue* original)
+Queue* clone_queue(Queue* original)
 {
     if(original == NULL || original->size == 0)
-        return newQueue();
+        return new_queue();
     Queue* ret = (Queue*) calloc(1, sizeof(Queue));
     int value;
     for (int i = 0; i < queue_len(original); i++)
     {
-        int value = pop_value(original);
-        add_value(original, value);
-        add_value(ret, value);
+        int value = pop_value_queue(original);
+        add_value_queue(original, value);
+        add_value_queue(ret, value);
     }
     return ret;
 }
-QueueNode* newNode(int v){
+QueueNode* new_node_queue(int v){
     QueueNode* ret = (QueueNode*) calloc(1, sizeof(QueueNode));
     ret->value = v;
     return ret;
 }
-QueueNode* find_Node(Queue* q, int value){
+QueueNode* find_node_queue(Queue* q, int value){
     QueueNode* ret = NULL;
     int walk = 0;
     int total = q->size;
-    QueueNode* n = pop_node(q);
+    QueueNode* n = pop_node_queue(q);
     while (walk < total)
     {
         if(n->value == value)
             ret = n;
-        add_node(q, n);
-        n = pop_node(q);
+        add_node_queue(q, n);
+        n = pop_node_queue(q);
     }
     return ret;
 }
-QueueNode* pop_node(Queue* q){
+QueueNode* pop_node_queue(Queue* q){
     QueueNode* ret = q->first;
     q->first = q->first->next;
-    clear_Node(ret);
+    clear_node_queue(ret);
     q->size--;
     return ret;
 }
-int add_value(Queue* q, int value){
+int add_value_queue(Queue* q, int value){
     if(q == NULL)
         return 0;
     q->size++;
     if(q->last == NULL)
     {
-        q->last = newNode(value);
+        q->last = new_node_queue(value);
         q->first = q->last;
         return 1;
     }
-    q->last->next = newNode(value);
+    q->last->next = new_node_queue(value);
     q->last = q->last->next;
     return 1;
 }
-int add_node(Queue* q, QueueNode* n){
+int add_node_queue(Queue* q, QueueNode* n){
     if(q == NULL || n == NULL)
         return 0;
-    clear_Node(n);
+    clear_node_queue(n);
     q->size++;
     if(q->last == NULL)
     {
@@ -137,7 +137,7 @@ int add_node(Queue* q, QueueNode* n){
     q->last = n;
     return 1;
 }
-int add_sortQueueNode(Queue* q, QueueNode* n){
+int add_sort_node_queue(Queue* q, QueueNode* n){
     if(q == NULL || n == NULL)
         return 0;
     if(q->size == 0)
@@ -155,7 +155,7 @@ int add_sortQueueNode(Queue* q, QueueNode* n){
         return 1;
     }
     if(q->last->value <= n->value)
-        return add_node(q,n);
+        return add_node_queue(q,n);
     
     QueueNode* point = q->first;
     while (point->value < n->value)
@@ -166,15 +166,15 @@ int add_sortQueueNode(Queue* q, QueueNode* n){
     q->size++;
     return 1;
 }
-int sort_Queue(Queue* q){
+int sort_queue(Queue* q){
     if(q == NULL)
         return 0;
     if(q->size == 1)
         return 1;
     
-    Queue* empty = newQueue();
+    Queue* empty = new_queue();
     while (q->size > 0)
-        add_sortQueueNode(empty, pop_node(q));
+        add_sort_node_queue(empty, pop_node_queue(q));
     q->first = empty->first;
     q->last = empty->last;
     q->size = empty->size;
@@ -182,40 +182,40 @@ int sort_Queue(Queue* q){
     return q;
     //NOT IMPLEMENTED    
 }
-int pop_value(Queue* q){
+int pop_value_queue(Queue* q){
     if(q == NULL)
         return 0;
     int ret = q->first->value;
     q->last->next = q->first;
     q->first = q->first->next;
     free(q->last->next);
-    clear_Node(q->last);
+    clear_node_queue(q->last);
     q->size--;
     return ret;
 }
-int contains_queue_value(Queue* q, int v){
+int contains_value_in_queue(Queue* q, int v){
     if(q == NULL)
         return 0;
     int walk = 0;
     int ret = 0;
     int total = q->size;
-    QueueNode* n = pop_node(q);
+    QueueNode* n = pop_node_queue(q);
     while (walk < total)
     {
         if(n->value == v)
             ret = 1;
-        add_node(q, n);
-        n = pop_node(q);
+        add_node_queue(q, n);
+        n = pop_node_queue(q);
     }
     return ret;
 }
 int queue_len(Queue* q){
     return q->size;
 }
-void clear_Node(QueueNode* n){
+void clear_node_queue(QueueNode* n){
     n->next = NULL;
 }
-void printQueue(Queue* q)
+void print_queue(Queue* q)
 {
     if(q->size == 0)
     {

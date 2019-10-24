@@ -36,23 +36,23 @@ typedef struct _stack
 
 #include<stdio.h>
 #include<stdlib.h>
-Stack* newStack();
-Stack* cloneStack(Stack* original);
-StackNode* newNode(int v);
-StackNode* find_Node(Stack* s, int value);
-StackNode* pop_node(Stack* s);
+Stack* new_stack();
+Stack* clone_stack(Stack* original);
+StackNode* new_node_stack(int v);
+StackNode* find_node_stack(Stack* s, int value);
+StackNode* pop_node_stack(Stack* s);
 
-int add_value(Stack* s, int value);
-int add_node(Stack* s, StackNode* n);
-int add_sortStackNode(Stack* s, StackNode* n);
-int sort_Stack(Stack* s);
-int pop_value(Stack* s);
+int add_value_stack(Stack* s, int value);
+int add_node_stack(Stack* s, StackNode* n);
+int add_sort_node_stack(Stack* s, StackNode* n);
+int sort_stack(Stack* s); //!deprecated
+int pop_value_stack(Stack* s);
 
-int contains_stack_value(Stack* s, int v);
+int contains_value_in_stack(Stack* s, int v);
 int stack_len(Stack* s);
 
-void clear_Node(StackNode* n);
-void printStack(Stack* s);
+void clear_node_stack(StackNode* n);
+void print_stack(Stack* s);
 
 //===================================
 //                                   
@@ -64,28 +64,28 @@ void printStack(Stack* s);
 //                                   
 //===================================
 
-Stack* newStack(){
+Stack* new_stack(){
     return (Stack*) calloc(1, sizeof(Stack));
 }
-Stack* cloneStack(Stack* original)
+Stack* clone_stack(Stack* original)
 {
     if(original == NULL || original->size == 0)
-        return newStack();
+        return new_stack();
     Stack* ret = (Stack*) calloc(1, sizeof(Stack));
     StackNode* pointer = original->last;
     while (pointer!= NULL)
     {
-        add_value(ret, pointer->value);
+        add_value_stack(ret, pointer->value);
         pointer = pointer->prev;
     }
     return ret;
 }
-StackNode* newNode(int v){
+StackNode* new_node_stack(int v){
     StackNode* ret = (StackNode*) calloc(1, sizeof(StackNode));
     ret->value = v;
     return ret;
 }
-StackNode* find_Node(Stack* s, int value){
+StackNode* find_node_stack(Stack* s, int value){
     if(s==NULL)
         return NULL;
     StackNode* ret = s->last;
@@ -97,35 +97,35 @@ StackNode* find_Node(Stack* s, int value){
     }    
     return ret;
 }
-StackNode* pop_node(Stack* s){
+StackNode* pop_node_stack(Stack* s){
     if(s == NULL)
         return NULL;
     StackNode* ret = s->last;
     s->last = s->last->prev;
     s->last->next = NULL;
     s->size--;
-    clear_Node(ret);    
+    clear_node_stack(ret);    
     return ret;
 }
-int add_value(Stack* s, int value){
+int add_value_stack(Stack* s, int value){
     if(s == NULL)
         return 0;
     s->size++;
     if(s->first == NULL)
     {
-        s->first = newNode(value);
+        s->first = new_node_stack(value);
         s->last = s->first;
         return 1;
     }
-    s->first->prev = newNode(value);
+    s->first->prev = new_node_stack(value);
     s->first->prev->next = s->first;
     s->first = s->first->prev;
     return 1;
 }
-int add_node(Stack* s, StackNode* n){
+int add_node_stack(Stack* s, StackNode* n){
     if(s == NULL || n == NULL)
         return 0;
-    clear_Node(n);
+    clear_node_stack(n);
     s->size++;
     if(s->first == NULL)
     {
@@ -138,7 +138,7 @@ int add_node(Stack* s, StackNode* n){
     s->first = n;
     return 1;
 }
-int pop_value(Stack* s){
+int pop_value_stack(Stack* s){
     if(s == NULL)
         return 0;
     int ret = s->first->value;
@@ -148,7 +148,7 @@ int pop_value(Stack* s){
     s->size--;
     return ret;
 }
-int contains_stack_value(Stack* s, int v){
+int contains_value_in_stack(Stack* s, int v){
     if(s == NULL)
         return 0;
     StackNode* pointer= s->last;
@@ -164,11 +164,11 @@ int stack_len(Stack* s){
     return s->size;
 }
 
-void clear_Node(StackNode* n){
+void clear_node_stack(StackNode* n){
     n->next = NULL;
     n->prev = NULL;
 }
-void printStack(Stack* s)
+void print_stack(Stack* s)
 {
     if(s->size == 0)
         printf("empty\n");
