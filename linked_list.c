@@ -42,13 +42,14 @@ linked_list* sort_linked_list(linked_list* l);
 linked_node* newlinked_node_empty();
 linked_node* newlinked_node(int v);
 linked_node* find_linked_node(linked_list* l, int v);
+linked_node* indexof_linked(linked_list* l, int x);
 int add_last_linked(linked_list* l, int v);
 int add_first_linked(linked_list* l, int v);
 int add_in_order_linked(linked_list* l, int v);
 int remove_linked_value(linked_list* l, int v);
 int remove_all_linked_value(linked_list* l, int v);
 int contains_linked_value(linked_list* l, int v);
-int binary_search_linked_value(linked_list* l, int v);
+int ordened_search_linked_value(linked_list* l, int v);
 int linked_len(linked_list* l);
 int is_linked_empty(linked_list* l);
 void print_linked(linked_list* l);
@@ -132,20 +133,15 @@ int add_in_order_linked(linked_list* l, int v){
         return 1;
     }
     if(l->first->value >= v)
-    {
-        add_first_linked(l, v);
-        return 1;
-    }
+        return add_first_linked(l, v);
     if(l->last->value <= v)
-    {
-        add_last_linked(l, v);
-        return 1;
-    }
+        return add_last_linked(l, v);
+
     linked_node* p = l->first->next;
     linked_node* prev = l->first;
-    while (p->next != NULL)
+    while (p != NULL)
     {
-        if(p->value >= v)
+        if(p->value > v)
         {
             newest->next = p;
             prev->next = newest;
@@ -155,6 +151,7 @@ int add_in_order_linked(linked_list* l, int v){
         prev = p;
         p = p->next;
     }
+    printf("ERROR IT ISN'T A NUMBER: %d, \n", v);
     return 0;
 }
 int remove_linked_value(linked_list* l, int v){
@@ -215,8 +212,6 @@ int remove_all_linked_value(linked_list* l, int v){
     return remove;
 }
 int index_linked_value(linked_list * l, int index){
-    if(index >= l->size)
-        return NULL;
     linked_node* p = l->first;
     for(register int i = 0; i < index; i++)
         p = p->next;
@@ -233,25 +228,20 @@ int contains_linked_value(linked_list* l, int v){
     }
     return 0;
 }
-int binary_search_linked_value(linked_list* l, int v){
-    if(l->size = 0)
+int ordened_search_linked_value(linked_list* l, int v){
+    if(l->first->value > v || l->last->value < v)
         return 0;
-    int low, max, mean;
-    low = 0;
-    max = l->size;
-    mean = max/2;
-    while(low <= max && low > 0 && max < l->size)
+    linked_node* p;
+    p = l->first;
+    while(p != NULL)
     {
-        int actual = index_linked_value(l, mean);
-        if(actual == v)
+        if(v == p->value)
             return 1;
-        if(actual < v)
-            low = mean + 1;
-        else
-            max = mean - 1;
-        mean = (max - low)/2;
+        if(v > p->value)
+            return 0;
+        p = p->next;
     }
-    return 0;    
+    return 0; 
 }
 int linked_len(linked_list* l){
     return l->size;
