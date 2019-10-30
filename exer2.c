@@ -54,6 +54,7 @@ void ler_dados(char* nome, int qtd)
         chaves[i] = numero;
         i++;
     }
+    quantidade = i;
 }
 int contem(int * list, int tam, int valor){
     if(list == NULL || tam == 0)
@@ -72,19 +73,16 @@ void calcular_chaves_distintas(int qtd){
     unicas = newlinked_list();
     int i = 0;
     while(i < qtd)
-    {
-        if(!contem(unicas, p->value))
-            add_in_order_linked(unicas, p->value);
-        p = p->next;
-    }
+        if(!contains_linked_value(unicas, chaves[i]))
+            add_in_order_linked(unicas, chaves[i]);
 }
-void calcular_maior_ocorrencia(){
+void calcular_maior_ocorrencia(int qtd){
     maior_ocorrencia = unicas->first->value;    
-    maior_qtd = contem_qtd(chaves, maior_ocorrencia);
+    maior_qtd = contem_qtd_int(chaves, qtd, maior_ocorrencia);
     linked_node * ponteiro = unicas->first->next;
     while (ponteiro != NULL)
     {
-        int qtd_aux = contem_qtd(chaves, ponteiro->value);
+        int qtd_aux = contem_qtd_int(chaves, qtd, ponteiro->value);
         if(qtd_aux > maior_qtd)
         {
             maior_qtd = qtd_aux;
@@ -100,10 +98,10 @@ void executar(char* nome, int qtd){
     
     calcular_chaves_distintas(qtd);
 
-    calcular_maior_ocorrencia();
+    calcular_maior_ocorrencia(qtd);
 
-    printf("comprimento N do fluxo de entrada:  %d\n", chaves->size);
-    printf("o número de chaves distintas: %d\n", chaves_qtd);
+    printf("comprimento N do fluxo de entrada:  %d\n", quantidade);
+    printf("o número de chaves distintas: %d\n", unicas->size);
     printf("chave mais frequente: %d e o número de ocorrências dessa chave: %d\n", maior_ocorrencia, maior_qtd);
     fim = clock();    
     printf("Tempo de processamento: %Lf", (long double)(fim - comeco));
@@ -111,13 +109,13 @@ void executar(char* nome, int qtd){
 
 int main(){
     printf("\n\n---PRIMEIRO ARQUIVO--- randInt1K.txt\n\n");
-    executar("randInt1K.txt");
+    executar("randInt1K.txt", 1000);
     printf("\n\n--- SEGUNDO ARQUIVO --- randInt10K.txt\n\n");
-    executar("randInt10K.txt");
+    executar("randInt10K.txt", 10000);
     printf("\n\n--- TERCEIRO ARQUIVO --- randInt100K.txt\n\n");
-    executar("randInt100K.txt");
+    executar("randInt100K.txt", 100000);
     printf("\n\n--- QUARTO ARQUIVO --- randInt1M.txt\n\n");
-    executar("randInt1M.txt");
+    executar("randInt1M.txt", 1000000);
 
     return 0;
 }
@@ -153,5 +151,5 @@ o número de chaves distintas: 10000
 chave mais frequente: 6777 e o número de ocorrências dessa chave: 151
 Tempo de processamento: 37952936.000000
 
-Os resultados estão de acordo com as previsões teóricas?: NÃO
+Vale a pena mantera lista em ordem crescente?: SIM, porém resultado melhor para grandes quantidades de dados
 */
