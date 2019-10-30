@@ -243,6 +243,26 @@ int ordened_search_linked_value(linked_list* l, int v){
     }
     return 0; 
 }
+int binary_search_linked_value(linked_list* l, int v){
+    if(l->size = 0)
+        return 0;
+    int low, max, mean;
+    low = 0;
+    max = l->size;
+    mean = max/2;
+    while(low <= max && low > 0 && max < l->size)
+    {
+        int actual = index_linked_value(l, mean);
+        if(actual == v)
+            return 1;
+        if(actual < v)
+            low = mean + 1;
+        else
+            max = mean - 1;
+        mean = (max - low)/2;
+    }
+    return 0;    
+}
 int linked_len(linked_list* l){
     return l->size;
 }

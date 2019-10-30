@@ -71,7 +71,7 @@ void executar(char* nome, int qutd){
     printf("o número de chaves distintas: %d\n", chaves_qtd);
     printf("chave mais frequente: %d e o número de ocorrências dessa chave: %d\n", maior_ocorrencia, maior_qtd);
     fim = clock();    
-    printf("Tempo de processamento: %Lf", (long double)(fim - comeco));
+    printf("Tempo de processamento: %Lf", (long double)(fim - comeco)/CLOCKS_PER_SEC);
 }
 
 int main(){
@@ -96,28 +96,28 @@ OUTPUT:
 comprimento N do fluxo de entrada:  1000
 o número de chaves distintas: 948
 chave mais frequente: 3943 e o número de ocorrências dessa chave: 3
-Tempo de processamento: 3592.000000
+Tempo de processamento: 0.000000
 
 --- SEGUNDO ARQUIVO --- randInt10K.txt
 
 comprimento N do fluxo de entrada:  10000
 o número de chaves distintas: 6396
 chave mais frequente: 8887 e o número de ocorrências dessa chave: 6
-Tempo de processamento: 220938.000000
+Tempo de processamento: 203125.000000
 
 --- TERCEIRO ARQUIVO --- randInt100K.txt
 
 comprimento N do fluxo de entrada:  100000
 o número de chaves distintas: 10000
 chave mais frequente: 5145 e o número de ocorrências dessa chave: 23
-Tempo de processamento: 3497490.000000
+Tempo de processamento: 3265625.000000
 
 --- QUARTO ARQUIVO --- randInt1M.txt
 
 comprimento N do fluxo de entrada:  1000000
 o número de chaves distintas: 10000
 chave mais frequente: 6777 e o número de ocorrências dessa chave: 151
-Tempo de processamento: 37952936.000000
+Tempo de processamento: 32828125.000000
 
 Os resultados estão de acordo com as previsões teóricas?: NÃO
 */

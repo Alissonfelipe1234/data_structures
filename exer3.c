@@ -3,32 +3,17 @@
 #include <time.h>
 #include "linked_list.c"
 /*
-2  -  Reescreva  a  função  contabiliza  baseada  em  lista  encadeada  de modo  que  as  chaves  sejam  armazenadas  na  lista  encadeada  em ordem  crescente.
-Estime  o  desempenho.  Vale  a  pena  mantera  lista em ordem crescente? 
+3 - Repita os testes sugeridos no exercício 1, desta vez usando uma
+lista encadeada para armazenar as contagens.
 */
 
 clock_t comeco, fim;
 
+linked_list* chaves;
 linked_list* unicas;
-int * chaves;
 int numero;
 
 int quantidade, chaves_qtd, maior_ocorrencia, maior_qtd, auxiliar;
-
-int contem_qtd_int(int * list, int tam, int valor){
-    if(list == NULL || tam == 0)
-        return 0;
-    int aux = 0;
-    int retorno = 0;
-    while(aux < tam)
-    {
-        if(list[aux] == valor)
-            retorno++;
-        aux++;
-    }
-    return retorno;
-}
-
 
 int contem_qtd(linked_list * list, int valor){
     if(list == NULL || list->size == 0)
@@ -43,37 +28,21 @@ int contem_qtd(linked_list * list, int valor){
     }
     return retorno;
 }
-void ler_dados(char* nome, int qtd)
+void ler_dados(char* nome)
 {
     FILE *arquivo;
     arquivo = fopen(nome, "r");
-    chaves = (int*) calloc(qtd, sizeof(int));
-    int i = 0;
+
+    chaves = newlinked_list();
     while (fscanf(arquivo, "%d", &numero) != EOF)
-    {
-        chaves[i] = numero;
-        i++;
-    }
+        add_in_order_linked(chaves, numero);
 }
-int contem(int * list, int tam, int valor){
-    if(list == NULL || tam == 0)
-        return 0;
-    int aux = 0;
-    while(aux < tam)
-    {
-        if(list[aux] == valor)
-            return 1;
-        aux++;
-    }
-    return 0;
-}
-    
-void calcular_chaves_distintas(int qtd){
+void calcular_chaves_distintas(){
     unicas = newlinked_list();
-    int i = 0;
-    while(i < qtd)
+    linked_node* p = chaves->first;
+    while(p != NULL)
     {
-        if(!contem(unicas, p->value))
+        if(!binary_search_linked_value(unicas, p->value))
             add_in_order_linked(unicas, p->value);
         p = p->next;
     }
@@ -93,12 +62,12 @@ void calcular_maior_ocorrencia(){
         ponteiro = ponteiro->next;
     }
 }
-void executar(char* nome, int qtd){
+void executar(char* nome){
     comeco = clock();
 
-    ler_dados(nome, qtd);
+    ler_dados(nome);
     
-    calcular_chaves_distintas(qtd);
+    calcular_chaves_distintas();
 
     calcular_maior_ocorrencia();
 
