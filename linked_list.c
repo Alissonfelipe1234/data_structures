@@ -48,6 +48,7 @@ int add_in_order_linked(linked_list* l, int v);
 int remove_linked_value(linked_list* l, int v);
 int remove_all_linked_value(linked_list* l, int v);
 int contains_linked_value(linked_list* l, int v);
+int binary_search_linked_value(linked_list* l, int v);
 int linked_len(linked_list* l);
 int is_linked_empty(linked_list* l);
 void print_linked(linked_list* l);
@@ -213,6 +214,14 @@ int remove_all_linked_value(linked_list* l, int v){
         remove = 1;
     return remove;
 }
+int index_linked_value(linked_list * l, int index){
+    if(index >= l->size)
+        return NULL;
+    linked_node* p = l->first;
+    for(register int i = 0; i < index; i++)
+        p = p->next;
+    return p->value;   
+}
 int contains_linked_value(linked_list* l, int v){
     linked_node* p;
     p = l->first;
@@ -223,6 +232,26 @@ int contains_linked_value(linked_list* l, int v){
         p = p->next;
     }
     return 0;
+}
+int binary_search_linked_value(linked_list* l, int v){
+    if(l->size = 0)
+        return 0;
+    int low, max, mean;
+    low = 0;
+    max = l->size;
+    mean = max/2;
+    while(low <= max && low > 0 && max < l->size)
+    {
+        int actual = index_linked_value(l, mean);
+        if(actual == v)
+            return 1;
+        if(actual < v)
+            low = mean + 1;
+        else
+            max = mean - 1;
+        mean = (max - low)/2;
+    }
+    return 0;    
 }
 int linked_len(linked_list* l){
     return l->size;
