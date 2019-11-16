@@ -2,13 +2,15 @@
 #include<stdio.h>
 
 typedef struct _carro{
-    char modelo[16];
-    int ano;
-    char nome[16];
-    int preco;
-    char placa[8];
+    char placa[7]
+    char modelo[15];
+    unsigned int ano;
+    char proprietario[15];
+    unsigned int preco;
 }Carro;
 
+// PLACA MODELO ANO PROPRIETARIO PRECO
+// ABC1234 Palio 2008 Luciano 18000
 int main (){
     
 }
